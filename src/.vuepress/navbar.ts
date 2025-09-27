@@ -8,8 +8,8 @@ export default navbar([
     link: "freshman/",
   },
   {
-    text: "下载中心",
-    icon: "vaadin:download",
-    link: "dlcenter/",
+    text: "知识库",
+    icon: "ph:seal-question-fill",
+    link: "achieve/",
   },
 ]);
