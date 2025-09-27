@@ -82,23 +82,23 @@ jobs:
         run: |
           coscmd upload -rs -f src/.vuepress/dist/ / --delete
           
-  scrape:
-    name: Scrape
-    needs: upload
-    runs-on: ubuntu-latest
-    steps:
-      - name: Wait For 5 Seconds
-        run: sleep 5
-        shell: bash
+  #scrape:
+    #name: Scrape
+    #needs: upload
+    #runs-on: ubuntu-latest
+    #steps:
+      #- name: Wait For 5 Seconds
+        #run: sleep 5
+        #shell: bash
 
-      - name: Update RemoteScrape
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          port: ${{ secrets.REMOTE_PORT }}
-          username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.REMOTE_SSH_KEY }}
-          passphrase: ${{ secrets.REMOTE_SSH_PASSPHRASE }}
-          script: |
-            cd /opt/1panel/www/sites/srch.yezer.cn/index
-            docker run -t --rm --network=host -e MEILISEARCH_HOST_URL='https://srch.yezer.cn' -e MEILISEARCH_API_KEY='${{ secrets.MEILISEARCH_API_KEY }}' -v ./scraper.json:/docs-scraper/config.json getmeili/docs-scraper:latest pipenv run ./docs_scraper config.json
+      #- name: Update RemoteScrape
+        #uses: appleboy/ssh-action@v1.0.3
+        #with:
+          #host: ${{ secrets.REMOTE_HOST }}
+          #port: ${{ secrets.REMOTE_PORT }}
+          #username: ${{ secrets.REMOTE_USER }}
+          #key: ${{ secrets.REMOTE_SSH_KEY }}
+          #passphrase: ${{ secrets.REMOTE_SSH_PASSPHRASE }}
+          #script: |
+            #cd /opt/1panel/www/sites/srch.yezer.cn/index
+            #docker run -t --rm --network=host -e MEILISEARCH_HOST_URL='https://srch.yezer.cn' -e MEILISEARCH_API_KEY='${{ secrets.MEILISEARCH_API_KEY }}' -v ./scraper.json:/docs-scraper/config.json getmeili/docs-scraper:latest pipenv run ./docs_scraper config.json

@@ -34,12 +34,12 @@ export default hopeTheme({
 
   // 在这里配置主题提供的插件
   plugins: {
-    meilisearch: {
+    /*meilisearch: {
       host: "https://srch.yezer.cn",
       apiKey: "27d6028ff5ad7ac2b3e8ab2845a3e6c7de01cf3db6b49886cd25a5adc76e0ee9",
       indexUid: "xuda_website",
       hotKeys: [],
-    },
+    },*/
 
     components: {
       components: ["VPCard","Badge"],
