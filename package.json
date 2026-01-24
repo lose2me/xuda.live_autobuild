@@ -1,32 +1,26 @@
 {
-  "name": "xuda_website",
-  "description": "xuda_website",
+  "name": "xuda.live",
+  "description": "xuda.live",
   "version": "2.0.0",
-  "license": "CC BY-NC-ND 4.0",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "docs:build": "vuepress-vite build src",
     "docs:clean-dev": "vuepress-vite dev src --clean-cache",
-    "docs:dev": "vuepress-vite dev src -p 7070",
+    "docs:dev": "vuepress-vite dev src",
     "docs:update-package": "pnpm dlx vp-update"
   },
   "devDependencies": {
-    "@vuepress/bundler-vite": "2.0.0-rc.24",
-    "@vuepress/plugin-meilisearch": "2.0.0-rc.112",
-    "@vuepress/plugin-umami-analytics": "2.0.0-rc.112",
-    "sass-embedded": "^1.93.2",
-    "twikoo": "^1.6.44",
-    "vue": "^3.5.22",
-    "vuepress": "2.0.0-rc.24",
-    "vuepress-theme-hope": "2.0.0-rc.94"
+    "@vuepress/bundler-vite": "2.0.0-rc.26",
+    "sass-embedded": "^1.97.1",
+    "vue": "^3.5.26",
+    "vuepress": "2.0.0-rc.26",
+    "vuepress-theme-hope": "2.0.0-rc.102"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "@parcel/watcher",
       "esbuild"
-    ],
-    "ignoredBuiltDependencies": [
-      "@parcel/watcher"
     ]
-  },
-  "packageManager": "pnpm@10.17.1+sha512.17c560fca4867ae9473a3899ad84a88334914f379be46d455cbf92e5cf4b39d34985d452d2583baf19967fa76cb5c17bc9e245529d0b98745721aa7200ecaf7a"
+  }
 }
