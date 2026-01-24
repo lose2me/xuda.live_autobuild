@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   generator:
@@ -38,6 +38,17 @@ jobs:
           NODE_OPTIONS: --max_old_space_size=8192
         run: |-
           pnpm run docs:build
+
+      - name: Create source archive
+        run: |
+          git archive --format=zip --output repo-${{ github.sha }}.zip HEAD
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: autobuild-${{ github.run_number }}
+          name: Autobuild ${{ github.run_number }}
+          files: repo-${{ github.sha }}.zip
 
       - name: Install Coscmd And Tccli
         run: |
