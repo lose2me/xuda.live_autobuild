@@ -9,7 +9,7 @@
 
 每个 Web 页面都是根据对应的一个 .md 文件渲染而成。.md 文件使用记事本或文本编辑器(如 VSCode) 即可编写。
   
-```mermaid
+```
 flowchart TD
   A[触发：push 到 main] --> B[Job: generator (ubuntu-latest)]
   B --> C[Checkout 仓库]
