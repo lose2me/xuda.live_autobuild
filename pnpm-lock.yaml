@@ -11,6 +11,9 @@ importers:
       '@vuepress/bundler-vite':
         specifier: 2.0.0-rc.26
         version: 2.0.0-rc.26(@types/node@25.0.10)(sass-embedded@1.97.3)(sass@1.97.3)
+      '@vuepress/plugin-umami-analytics':
+        specifier: 2.0.0-rc.121
+        version: 2.0.0-rc.121(vuepress@2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.10)(sass-embedded@1.97.3)(sass@1.97.3))(vue@3.5.27))
       sass-embedded:
         specifier: ^1.97.3
         version: 1.97.3
@@ -1072,6 +1075,11 @@ packages:
 
   '@vuepress/plugin-theme-data@2.0.0-rc.120':
     resolution: {integrity: sha512-5gYzDQ7tfA/57VzlsT2w4/8XORzGuWO+B2noKuZvv98kFo7BpFXPMBn1H225gcCgyY+lOXRXAtE0iFO69BznOQ==}
+    peerDependencies:
+      vuepress: 2.0.0-rc.26
+
+  '@vuepress/plugin-umami-analytics@2.0.0-rc.121':
+    resolution: {integrity: sha512-3J+TREj+vAuucNWdu/dMB3PJtLlxvf2jJ/xcMWcr9MmNb2SI3qNBIIJzH/GLoak+4TRJfdkiEQUINlHpo51IGA==}
     peerDependencies:
       vuepress: 2.0.0-rc.26
 
@@ -3248,6 +3256,14 @@ snapshots:
   '@vuepress/plugin-theme-data@2.0.0-rc.120(vuepress@2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.10)(sass-embedded@1.97.3)(sass@1.97.3))(vue@3.5.27))':
     dependencies:
       '@vue/devtools-api': 8.0.5
+      vue: 3.5.27
+      vuepress: 2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.10)(sass-embedded@1.97.3)(sass@1.97.3))(vue@3.5.27)
+    transitivePeerDependencies:
+      - typescript
+
+  '@vuepress/plugin-umami-analytics@2.0.0-rc.121(vuepress@2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.10)(sass-embedded@1.97.3)(sass@1.97.3))(vue@3.5.27))':
+    dependencies:
+      '@vuepress/helper': 2.0.0-rc.121(vuepress@2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.10)(sass-embedded@1.97.3)(sass@1.97.3))(vue@3.5.27))
       vue: 3.5.27
       vuepress: 2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.10)(sass-embedded@1.97.3)(sass@1.97.3))(vue@3.5.27)
     transitivePeerDependencies:
