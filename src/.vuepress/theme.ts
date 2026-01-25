@@ -14,8 +14,8 @@ export default hopeTheme({
   sidebar,
 
   // 页脚
-  footer: "合法备案 | 苏ICP备2024137980号",
-  copyright: `使用 <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans">CC BY-NC-ND 4.0</a> 协议`,
+  footer: "苏ICP备2024137980号",
+  copyright: `<a href="http://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans">CC BY-NC-ND 4.0</a> Licensed`,
   displayFooter: true,
 
   pageInfo: false,

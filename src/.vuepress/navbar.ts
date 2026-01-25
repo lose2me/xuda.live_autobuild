@@ -7,9 +7,4 @@ export default navbar([
     icon: "book",
     link: "freshman/",
   },
-  {
-    text: "知识库",
-    icon: "ph:seal-question-fill",
-    link: "achieve/",
-  },
 ]);
