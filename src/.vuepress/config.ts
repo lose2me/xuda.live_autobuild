@@ -12,7 +12,7 @@ export default defineUserConfig({
     ]
   ],
   lang: "zh-CN",
-  title: "徐工指南",
+  title: "徐工生活指南",
   description: "旨在为徐工在校学生提供必要的生活指南",
 
   bundler: viteBundler({
