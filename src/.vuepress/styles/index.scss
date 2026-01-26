@@ -56,6 +56,16 @@ a.route-link.vp-feature-item.link:hover{
 	background-color: rgba(180, 59, 69, 0.14);
 }
 
+.vp-features.features-2col .vp-feature-item{
+	flex-basis: calc(50% - 3rem);
+}
+
+@media (max-width: 719px) {
+	.vp-features.features-2col .vp-feature-item{
+		flex-basis: 100%;
+	}
+}
+
 .tk-footer {
     display: none;
 }
