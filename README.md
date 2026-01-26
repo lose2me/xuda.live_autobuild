@@ -7,7 +7,7 @@
 
 这里是 **徐工生活指南** Web的资源仓库。欢迎大家检查并提交错误。
 
-每个 Web 页面都是根据对应的一个 .mdx 文件渲染而成。.mdx 文件使用记事本或文本编辑器(如 VSCode) 即可编写。
+每个 Web 页面都是根据对应的一个 .md 文件渲染而成。.md 文件使用记事本或文本编辑器(如 VSCode) 即可编写。
   
 ```
   A[触发：push 到 main] --> B[Job: generator (ubuntu-latest)]

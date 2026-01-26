@@ -14,7 +14,7 @@ actions:
 
   - text: 校边食品调查公示
     icon: fluent:food-24-filled
-    link: archived/foodsafety.mdx
+    link: archived/foodsafety.md
     type: primary
 
 highlights:
