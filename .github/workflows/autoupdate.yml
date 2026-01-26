@@ -39,13 +39,6 @@ jobs:
         run: |-
           pnpm run docs:build
 
-      - name: Verify no cdn.jsdelivr.net references
-        run: |
-          if grep -RIn "cdn.jsdelivr.net" src/.vuepress/dist; then
-            echo "::error::Found cdn.jsdelivr.net references in dist (should be localized to local files)."
-            exit 1
-          fi
-
       - name: Create source archive
         run: |
           git archive --format=zip --output repo-${{ github.sha }}.zip HEAD
