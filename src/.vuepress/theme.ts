@@ -31,7 +31,7 @@ export default hopeTheme({
   plugins: {
 
     components: {
-      components: ["VPCard","Badge"],
+      components: ["Badge"],
     },
 
     icon: {
