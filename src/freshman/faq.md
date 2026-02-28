@@ -1,7 +1,7 @@
 ---
 title: 常见问题
 icon: fluent-emoji-flat:thinking-face
-oroder: 4
+order: 4
 ---
 
 ::: info 特别鸣谢 :heart: 24级小董学长、小崔学姐分别对中心校区、东校区相关问题的解答，由25级小吴学弟对解答进行优化。  

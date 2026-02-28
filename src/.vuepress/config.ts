@@ -1,6 +1,5 @@
 import { defineUserConfig } from "vuepress";
 import { viteBundler } from "@vuepress/bundler-vite";
-import { umamiAnalyticsPlugin } from '@vuepress/plugin-umami-analytics'
 
 import theme from "./theme.js";
 
@@ -8,8 +7,9 @@ export default defineUserConfig({
   base: "/",
   head: [
     [
-      'link', { rel: 'icon', href: 'favicon.ico' }
-    ]
+      "link",
+      { rel: "icon", href: "/favicon.ico" },
+    ],
   ],
   lang: "zh-CN",
   title: "徐工生活指南",
