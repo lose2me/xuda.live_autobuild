@@ -1,5 +1,6 @@
 # 徐工生活指南 Web 构建仓库
-![](https://img.shields.io/badge/发起人-盐泡-blue.svg?style=for-the-badge)
+[![Autoupdate](https://github.com/lose2me/xuda.live_autobuild/actions/workflows/autoupdate.yml/badge.svg)](https://github.com/lose2me/xuda.live_autobuild/actions/workflows/autoupdate.yml)
+
 
 > 请注意: 本项目的文本部分，除采集于公共领域(均标注了引用来源)的部份外，其余文本使用[署名-非商业性使用-禁止演绎 4.0 国际许可证](https://creativecommons.org/licenses/by-nc-nd/4.0/)。
 
