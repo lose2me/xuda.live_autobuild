@@ -71,8 +71,17 @@ jobs:
 
       - name: Sync xzitpocket data
         run: |
-          mkdir -p data
+          mkdir -p data/images
           curl -sf "https://api.github.com/repos/lose2me/xzitpocket/releases?per_page=30" -o data/releases.json || echo "[]" > data/releases.json
           curl -sf "https://api.github.com/repos/lose2me/xzitpocket/commits?per_page=30" -o data/commits.json || echo "[]" > data/commits.json
           curl -sf -H "Accept: application/vnd.github.html" "https://api.github.com/repos/lose2me/xzitpocket/readme" -o data/readme.html || echo "" > data/readme.html
+          if [ -s data/readme.html ]; then
+            grep -oE 'https://(github\.com|raw\.githubusercontent\.com)/lose2me/xzitpocket/[^"]+' data/readme.html | \
+              grep -iE '\.(png|jpg|jpeg|gif|svg|webp)' | sort -u | while read url; do
+                filename=$(basename "${url%%\?*}")
+                if curl -sfL "$url" -o "data/images/$filename"; then
+                  sed -i "s|${url}|/api/xzitpocket/images/${filename}|g" data/readme.html
+                fi
+              done
+          fi
           coscmd upload -rs data/ /api/xzitpocket/

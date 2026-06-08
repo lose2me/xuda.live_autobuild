@@ -1,7 +1,6 @@
 <template>
   <div class="github-activity">
-    <div v-if="loading" class="loading">加载中...</div>
-    <div v-else-if="error" class="error">{{ error }}</div>
+    <div v-if="loading" class="loading"><div class="spinner"></div></div>
 
     <!-- 简介 -->
     <template v-else-if="view === 'readme'">
@@ -43,7 +42,7 @@
       <h3 v-if="historyReleases.length" class="section-title">历史版本 [{{ historyReleases.length }}]</h3>
       <div v-if="releases.length === 0" class="empty">暂无版本发布</div>
       <template v-else>
-        <div v-for="r in pagedReleases" :key="r.id" class="card">
+        <div v-for="r in historyReleases" :key="r.id" class="card">
           <div class="card-header">
             <span class="tag">{{ r.tag_name }}</span>
             <span class="date">{{ formatDate(r.published_at) }}</span>
@@ -74,11 +73,7 @@
             在 GitHub 上查看 &rarr;
           </a>
         </div>
-        <div v-if="historyReleases.length > PAGE_SIZE" class="pager">
-          <button :disabled="relPage <= 1" @click="relPage--">&lsaquo; 上一页</button>
-          <span>{{ relPage }} / {{ relTotalPages }}</span>
-          <button :disabled="relPage >= relTotalPages" @click="relPage++">下一页 &rsaquo;</button>
-        </div>
+
       </template>
     </template>
 
@@ -86,7 +81,7 @@
     <template v-else-if="view === 'changelog'">
       <div v-if="commits.length === 0" class="empty">暂无提交记录</div>
       <template v-else>
-        <div v-for="c in pagedCommits" :key="c.sha" class="card">
+        <div v-for="c in commits" :key="c.sha" class="card">
           <div class="card-header">
             <code class="sha">{{ c.sha.slice(0, 7) }}</code>
             <span class="date">{{ formatDate(c.commit.author.date) }}</span>
@@ -107,11 +102,7 @@
             在 GitHub 上查看 &rarr;
           </a>
         </div>
-        <div v-if="commits.length > PAGE_SIZE" class="pager">
-          <button :disabled="comPage <= 1" @click="comPage--">&lsaquo; 上一页</button>
-          <span>{{ comPage }} / {{ comTotalPages }}</span>
-          <button :disabled="comPage >= comTotalPages" @click="comPage++">下一页 &rsaquo;</button>
-        </div>
+
       </template>
     </template>
   </div>
@@ -119,8 +110,6 @@
 
 <script setup>
 import { ref, computed, reactive, inject, onMounted } from "vue";
-
-const PAGE_SIZE = 5;
 
 const props = defineProps({
   repo: { type: String, required: true },
@@ -135,9 +124,6 @@ const releases = ref([]);
 const commits = ref([]);
 const readme = ref("");
 const loading = ref(true);
-const error = ref("");
-const relPage = ref(1);
-const comPage = ref(1);
 const expanded = reactive(new Set());
 
 const API_BASE = "/api/xzitpocket";
@@ -146,19 +132,6 @@ const latestRelease = computed(() => releases.value.length ? releases.value[0] :
 const historyReleases = computed(() => releases.value.slice(1));
 const hasAndroid = computed(() => androidUrl.value && androidUrl.value !== "#");
 const hasIos = computed(() => iosUrl.value && iosUrl.value !== "#");
-
-const relTotalPages = computed(() => Math.max(1, Math.ceil(historyReleases.value.length / PAGE_SIZE)));
-const comTotalPages = computed(() => Math.max(1, Math.ceil(commits.value.length / PAGE_SIZE)));
-
-const pagedReleases = computed(() => {
-  const start = (relPage.value - 1) * PAGE_SIZE;
-  return historyReleases.value.slice(start, start + PAGE_SIZE);
-});
-
-const pagedCommits = computed(() => {
-  const start = (comPage.value - 1) * PAGE_SIZE;
-  return commits.value.slice(start, start + PAGE_SIZE);
-});
 
 function toggleExpand(key) {
   if (expanded.has(key)) expanded.delete(key);
@@ -215,26 +188,37 @@ onMounted(async () => {
     releases.value = rel;
     commits.value = com;
     readme.value = rm;
-  } catch (e) {
-    error.value = "网络请求失败，请检查网络连接";
-  } finally {
     loading.value = false;
+  } catch (e) {
+    // keep loading spinner
   }
 });
 </script>
 
 <style scoped>
-.loading,
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--vp-c-border);
+  border-top-color: var(--vp-c-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 .empty {
   text-align: center;
   padding: 2rem;
   color: var(--vp-c-text-subtle);
-}
-
-.error {
-  text-align: center;
-  padding: 2rem;
-  color: #ef4444;
 }
 
 .section-title {
@@ -436,39 +420,6 @@ onMounted(async () => {
 .asset-size {
   color: var(--vp-c-text-subtle);
   font-size: 0.8rem;
-}
-
-.pager {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 0.8rem;
-  padding-top: 0.8rem;
-}
-
-.pager button {
-  border: 1px solid var(--vp-c-border);
-  background: var(--vp-c-bg);
-  color: var(--vp-c-accent);
-  padding: 0.3rem 0.8rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.85rem;
-}
-
-.pager button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.pager button:not(:disabled):hover {
-  background: var(--vp-c-accent-soft);
-}
-
-.pager span {
-  font-size: 0.85rem;
-  color: var(--vp-c-text-mute);
 }
 
 .readme-body {
