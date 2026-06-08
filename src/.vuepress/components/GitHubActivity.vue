@@ -169,17 +169,21 @@ onMounted(async () => {
   try {
     const fetches = [];
     if (props.view === "releases") {
-      fetches.push(fetch(`${API_BASE}/releases.json`).then(r => r.ok ? r.json() : []));
+      fetches.push(fetch(`${API_BASE}/releases.json`).then(r => r.ok && r.headers.get("content-type")?.includes("json") ? r.json() : []));
     } else {
       fetches.push(Promise.resolve([]));
     }
     if (props.view === "changelog") {
-      fetches.push(fetch(`${API_BASE}/commits.json`).then(r => r.ok ? r.json() : []));
+      fetches.push(fetch(`${API_BASE}/commits.json`).then(r => r.ok && r.headers.get("content-type")?.includes("json") ? r.json() : []));
     } else {
       fetches.push(Promise.resolve([]));
     }
     if (props.view === "readme") {
-      fetches.push(fetch(`${API_BASE}/readme.html`).then(r => r.ok ? r.text() : ""));
+      fetches.push(fetch(`${API_BASE}/readme.html`).then(async r => {
+        if (!r.ok) return "";
+        const t = await r.text();
+        return t.startsWith("<!DOCTYPE") ? "" : t;
+      }));
     } else {
       fetches.push(Promise.resolve(""));
     }
@@ -188,7 +192,12 @@ onMounted(async () => {
     releases.value = rel;
     commits.value = com;
     readme.value = rm;
-    loading.value = false;
+
+    const hasData =
+      (props.view === "releases" && rel.length > 0) ||
+      (props.view === "changelog" && com.length > 0) ||
+      (props.view === "readme" && rm);
+    if (hasData) loading.value = false;
   } catch (e) {
     // keep loading spinner
   }
