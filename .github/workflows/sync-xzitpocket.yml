@@ -1,0 +1,36 @@
+name: Sync xzitpocket Data
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    name: Fetch & Upload
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - name: Fetch GitHub API data
+        run: |
+          mkdir -p data
+          curl -sf "https://api.github.com/repos/lose2me/xzitpocket/releases?per_page=30" -o data/releases.json || echo "[]" > data/releases.json
+          curl -sf "https://api.github.com/repos/lose2me/xzitpocket/commits?per_page=30" -o data/commits.json || echo "[]" > data/commits.json
+          curl -sf -H "Accept: application/vnd.github.html" "https://api.github.com/repos/lose2me/xzitpocket/readme" -o data/readme.html || echo "" > data/readme.html
+
+      - name: Install Coscmd
+        run: pip3 install coscmd
+
+      - name: Configure Tencent Cloud COS
+        env:
+          TENCENT_COS_SECRET_ID: ${{ secrets.TENCENT_COS_SECRET_ID }}
+          TENCENT_COS_SECRET_KEY: ${{ secrets.TENCENT_COS_SECRET_KEY }}
+          TENCENT_COS_BUCKET: ${{ secrets.TENCENT_COS_BUCKET }}
+          TENCENT_COS_REGION: ${{ secrets.TENCENT_COS_REGION }}
+        run: |
+          coscmd config -a $TENCENT_COS_SECRET_ID -s $TENCENT_COS_SECRET_KEY -b $TENCENT_COS_BUCKET -r $TENCENT_COS_REGION
+
+      - name: Upload to COS
+        run: |
+          coscmd upload -rs data/ /api/xzitpocket/

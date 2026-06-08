@@ -1,54 +1,47 @@
 <template>
   <div class="github-activity">
-    <div v-if="!loading && !error && latestRelease" class="latest-card">
-      <div class="latest-header">
-        <span class="latest-label">最新版本</span>
-        <span class="tag">{{ latestRelease.tag_name }}</span>
-        <span class="date">{{ formatDate(latestRelease.published_at) }}</span>
-      </div>
-      <div v-if="latestRelease.body" class="card-body-wrap">
-        <div
-          :class="['card-body', { collapsed: !expanded.has('latest') }]"
-          v-html="renderBody(latestRelease.body)"
-        ></div>
-        <button
-          v-if="isLong(latestRelease.body)"
-          class="expand-btn"
-          @click="toggleExpand('latest')"
-        >
-          {{ expanded.has('latest') ? '收起' : '展开' }}
-        </button>
-      </div>
-      <div v-if="hasAndroid || hasIos" class="latest-downloads">
-        <a v-if="hasAndroid" :href="androidUrl" target="_blank" rel="noopener" class="dl-btn">
-          Android 下载
-        </a>
-        <a v-if="hasIos" :href="iosUrl" target="_blank" rel="noopener" class="dl-btn">
-          iOS 下载
-        </a>
-      </div>
-    </div>
-
-    <div class="tab-bar">
-      <button
-        :class="['tab-btn', { active: activeTab === 'releases' }]"
-        @click="activeTab = 'releases'; relPage = 1"
-      >
-        历史版本 [{{ historyReleases.length }}]
-      </button>
-      <button
-        :class="['tab-btn', { active: activeTab === 'commits' }]"
-        @click="activeTab = 'commits'; comPage = 1"
-      >
-        更新记录 [{{ commits.length }}]
-      </button>
-    </div>
-
     <div v-if="loading" class="loading">加载中...</div>
     <div v-else-if="error" class="error">{{ error }}</div>
 
-    <div v-else-if="activeTab === 'releases'" class="tab-content">
-      <div v-if="historyReleases.length === 0" class="empty">暂无历史版本</div>
+    <!-- 简介 -->
+    <template v-else-if="view === 'readme'">
+      <div v-if="!readme" class="empty">暂无简介</div>
+      <div v-else class="readme-body" v-html="readme"></div>
+    </template>
+
+    <!-- 版本发布 -->
+    <template v-else-if="view === 'releases'">
+      <div v-if="latestRelease" class="latest-card">
+        <div class="latest-header">
+          <span class="latest-label">最新版本</span>
+          <span class="tag">{{ latestRelease.tag_name }}</span>
+          <span class="date">{{ formatDate(latestRelease.published_at) }}</span>
+        </div>
+        <div v-if="latestRelease.body" class="card-body-wrap">
+          <div
+            :class="['card-body', { collapsed: !expanded.has('latest') }]"
+            v-html="renderBody(latestRelease.body)"
+          ></div>
+          <button
+            v-if="isLong(latestRelease.body)"
+            class="expand-btn"
+            @click="toggleExpand('latest')"
+          >
+            {{ expanded.has('latest') ? '收起' : '展开' }}
+          </button>
+        </div>
+        <div v-if="hasAndroid || hasIos" class="latest-downloads">
+          <a v-if="hasAndroid" :href="androidUrl" target="_blank" rel="noopener" class="dl-btn">
+            Android 下载
+          </a>
+          <a v-if="hasIos" :href="iosUrl" target="_blank" rel="noopener" class="dl-btn">
+            iOS 下载
+          </a>
+        </div>
+      </div>
+
+      <h3 v-if="historyReleases.length" class="section-title">历史版本 [{{ historyReleases.length }}]</h3>
+      <div v-if="releases.length === 0" class="empty">暂无版本发布</div>
       <template v-else>
         <div v-for="r in pagedReleases" :key="r.id" class="card">
           <div class="card-header">
@@ -81,18 +74,19 @@
             在 GitHub 上查看 &rarr;
           </a>
         </div>
-        <div class="pager">
+        <div v-if="historyReleases.length > PAGE_SIZE" class="pager">
           <button :disabled="relPage <= 1" @click="relPage--">&lsaquo; 上一页</button>
           <span>{{ relPage }} / {{ relTotalPages }}</span>
           <button :disabled="relPage >= relTotalPages" @click="relPage++">下一页 &rsaquo;</button>
         </div>
       </template>
-    </div>
+    </template>
 
-    <div v-else-if="activeTab === 'commits'" class="tab-content">
+    <!-- 更新日志 -->
+    <template v-else-if="view === 'changelog'">
       <div v-if="commits.length === 0" class="empty">暂无提交记录</div>
       <template v-else>
-        <div v-for="c in pagedCommits" :key="c.sha" class="card commit-card">
+        <div v-for="c in pagedCommits" :key="c.sha" class="card">
           <div class="card-header">
             <code class="sha">{{ c.sha.slice(0, 7) }}</code>
             <span class="date">{{ formatDate(c.commit.author.date) }}</span>
@@ -113,13 +107,13 @@
             在 GitHub 上查看 &rarr;
           </a>
         </div>
-        <div class="pager">
+        <div v-if="commits.length > PAGE_SIZE" class="pager">
           <button :disabled="comPage <= 1" @click="comPage--">&lsaquo; 上一页</button>
           <span>{{ comPage }} / {{ comTotalPages }}</span>
           <button :disabled="comPage >= comTotalPages" @click="comPage++">下一页 &rsaquo;</button>
         </div>
       </template>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -130,22 +124,23 @@ const PAGE_SIZE = 5;
 
 const props = defineProps({
   repo: { type: String, required: true },
+  view: { type: String, default: "readme" },
 });
 
 const config = inject("xzitpocketConfig", {});
 const androidUrl = computed(() => config.androidUrl || "");
 const iosUrl = computed(() => config.iosUrl || "");
 
-const activeTab = ref("releases");
 const releases = ref([]);
 const commits = ref([]);
+const readme = ref("");
 const loading = ref(true);
 const error = ref("");
 const relPage = ref(1);
 const comPage = ref(1);
 const expanded = reactive(new Set());
 
-const API = `https://api.github.com/repos/${props.repo}`;
+const API_BASE = "/api/xzitpocket";
 
 const latestRelease = computed(() => releases.value.length ? releases.value[0] : null);
 const historyReleases = computed(() => releases.value.slice(1));
@@ -199,17 +194,27 @@ function renderBody(md) {
 
 onMounted(async () => {
   try {
-    const [relRes, comRes] = await Promise.all([
-      fetch(`${API}/releases?per_page=30`),
-      fetch(`${API}/commits?per_page=30`),
-    ]);
-    if (!relRes.ok && !comRes.ok) {
-      error.value = "无法获取仓库数据，请稍后再试";
-      return;
+    const fetches = [];
+    if (props.view === "releases") {
+      fetches.push(fetch(`${API_BASE}/releases.json`).then(r => r.ok ? r.json() : []));
+    } else {
+      fetches.push(Promise.resolve([]));
     }
-    if (relRes.ok) releases.value = await relRes.json();
-    if (comRes.ok) commits.value = await comRes.json();
-    if (releases.value.length === 0) activeTab.value = "commits";
+    if (props.view === "changelog") {
+      fetches.push(fetch(`${API_BASE}/commits.json`).then(r => r.ok ? r.json() : []));
+    } else {
+      fetches.push(Promise.resolve([]));
+    }
+    if (props.view === "readme") {
+      fetches.push(fetch(`${API_BASE}/readme.html`).then(r => r.ok ? r.text() : ""));
+    } else {
+      fetches.push(Promise.resolve(""));
+    }
+
+    const [rel, com, rm] = await Promise.all(fetches);
+    releases.value = rel;
+    commits.value = com;
+    readme.value = rm;
   } catch (e) {
     error.value = "网络请求失败，请检查网络连接";
   } finally {
@@ -219,16 +224,31 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.github-activity {
-  max-width: 800px;
-  margin: 1rem auto;
+.loading,
+.empty {
+  text-align: center;
+  padding: 2rem;
+  color: var(--vp-c-text-subtle);
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #ef4444;
+}
+
+.section-title {
+  font-size: 0.95rem;
+  color: var(--vp-c-text-mute);
+  margin: 1.5rem 0 0.8rem;
+  font-weight: 600;
 }
 
 .latest-card {
   border: 2px solid var(--vp-c-accent);
   border-radius: 8px;
   padding: 1.2rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
   background: var(--vp-c-bg);
 }
 
@@ -272,50 +292,9 @@ onMounted(async () => {
 }
 
 .dl-btn::after,
-.link::after {
+.link::after,
+.asset-item a::after {
   display: none !important;
-}
-
-.tab-bar {
-  display: flex;
-  gap: 0;
-  border-bottom: 2px solid var(--vp-c-border);
-  margin-bottom: 1.2rem;
-}
-
-.tab-btn {
-  padding: 0.5rem 1.2rem;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: 0.95rem;
-  color: var(--vp-c-text-mute);
-  border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
-  transition: all 0.2s;
-}
-
-.tab-btn.active {
-  color: var(--vp-c-accent);
-  border-bottom-color: var(--vp-c-accent);
-  font-weight: 600;
-}
-
-.tab-btn:hover {
-  color: var(--vp-c-accent);
-}
-
-.loading,
-.empty {
-  text-align: center;
-  padding: 2rem;
-  color: var(--vp-c-text-subtle);
-}
-
-.error {
-  text-align: center;
-  padding: 2rem;
-  color: #ef4444;
 }
 
 .card {
@@ -490,5 +469,68 @@ onMounted(async () => {
 .pager span {
   font-size: 0.85rem;
   color: var(--vp-c-text-mute);
+}
+
+.readme-body {
+  line-height: 1.7;
+  color: var(--vp-c-text);
+}
+
+.readme-body :deep(h1),
+.readme-body :deep(h2),
+.readme-body :deep(h3) {
+  margin-top: 1.2rem;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+  color: var(--vp-c-accent);
+}
+
+.readme-body :deep(h1) { font-size: 1.4rem; }
+.readme-body :deep(h2) { font-size: 1.2rem; }
+.readme-body :deep(h3) { font-size: 1.05rem; }
+
+.readme-body :deep(p) {
+  margin: 0.5rem 0;
+}
+
+.readme-body :deep(a) {
+  color: var(--vp-c-accent);
+}
+
+.readme-body :deep(a)::after {
+  display: none !important;
+}
+
+.readme-body :deep(ul),
+.readme-body :deep(ol) {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.readme-body :deep(li) {
+  margin: 0.3rem 0;
+}
+
+.readme-body :deep(code) {
+  background: var(--vp-c-bg-soft);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.88rem;
+}
+
+.readme-body :deep(blockquote) {
+  border-left: 3px solid var(--vp-c-accent);
+  padding-left: 0.8rem;
+  margin: 0.5rem 0;
+  color: var(--vp-c-text-mute);
+}
+
+.readme-body :deep(img) {
+  max-width: 100%;
+  height: auto;
+}
+
+.readme-body :deep(.anchor) {
+  display: none;
 }
 </style>

@@ -2,4 +2,9 @@ import { sidebar } from "vuepress-theme-hope";
 
 export default sidebar({
    "/freshman/": "structure",
+   "/xzitpocket/": [
+     "",
+     "releases",
+     "changelog",
+   ],
 });

@@ -12,6 +12,8 @@ jobs:
   generator:
     name: Build & Upload
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -66,3 +68,11 @@ jobs:
       - name: Upload to Tencent Cloud COS
         run: |
           coscmd upload -rs -f src/.vuepress/dist/ / --delete
+
+      - name: Sync xzitpocket data
+        run: |
+          mkdir -p data
+          curl -sf "https://api.github.com/repos/lose2me/xzitpocket/releases?per_page=30" -o data/releases.json || echo "[]" > data/releases.json
+          curl -sf "https://api.github.com/repos/lose2me/xzitpocket/commits?per_page=30" -o data/commits.json || echo "[]" > data/commits.json
+          curl -sf -H "Accept: application/vnd.github.html" "https://api.github.com/repos/lose2me/xzitpocket/readme" -o data/readme.html || echo "" > data/readme.html
+          coscmd upload -rs data/ /api/xzitpocket/

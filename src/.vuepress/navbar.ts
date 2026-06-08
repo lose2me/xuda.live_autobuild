@@ -15,7 +15,7 @@ export default navbar([
   {
     text: "掌上徐工",
     icon: "mobile",
-    link: "/xzitpocket",
+    link: "/xzitpocket/",
   },
   {
     text: "校园墙[校群]",
