@@ -1,8 +1,8 @@
 name: Sync xzitpocket Data
 
 on:
-  schedule:
-    - cron: '*/10 * * * *'
+  repository_dispatch:
+    types: [xzitpocket-updated]
   workflow_dispatch:
 
 jobs:
