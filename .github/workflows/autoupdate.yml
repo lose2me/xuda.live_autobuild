@@ -73,6 +73,16 @@ jobs:
         run: |
           mkdir -p data/images
           curl -sf "https://api.github.com/repos/lose2me/xzitpocket/releases?per_page=30" -o data/releases.json || echo "[]" > data/releases.json
+          APK_URL=$(cat data/releases.json | python3 -c "
+          import json,sys
+          for r in json.load(sys.stdin):
+            for a in r.get('assets',[]):
+              if 'arm64-v8a-release.apk' in a['name']:
+                print(a['browser_download_url']); sys.exit()
+          ")
+          if [ -n "$APK_URL" ]; then
+            curl -fL --connect-timeout 10 --max-time 120 "$APK_URL" -o data/app-arm64-v8a-release.apk || echo "APK download failed, skipping"
+          fi
           curl -sf "https://api.github.com/repos/lose2me/xzitpocket/commits?per_page=30" -o data/commits.json || echo "[]" > data/commits.json
           curl -sf -H "Accept: application/vnd.github.html" "https://api.github.com/repos/lose2me/xzitpocket/readme" -o data/readme.html || echo "" > data/readme.html
           if [ -s data/readme.html ]; then
