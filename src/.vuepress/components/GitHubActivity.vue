@@ -366,6 +366,9 @@ onMounted(async () => {
 }
 
 .expand-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
   border: none;
   background: none;
   color: var(--vp-c-accent);
