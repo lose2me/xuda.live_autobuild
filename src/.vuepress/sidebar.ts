@@ -14,6 +14,12 @@ export default sidebar({
          "contact",
        ],
      },
+     {
+       text: "老生常谈",
+       icon: "comments",
+       collapsible: true,
+       children: [],
+     },
    ],
    "/xzitpocket/": [
      "",

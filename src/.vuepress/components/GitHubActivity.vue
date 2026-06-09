@@ -82,7 +82,7 @@
       <div v-if="commits.length === 0" class="empty">暂无提交记录</div>
       <template v-else>
         <h3 v-if="showUpdateTime" class="update-time-title">
-          文档更新 {{ commits.length }} 次，最后编辑于 {{ formatDate(commits[0].commit.author.date) }}
+          文档已更新 {{ commits.length }} 次，最后编辑于 {{ formatDate(commits[0].commit.author.date) }}
         </h3>
         <div v-for="(c, index) in displayCommits" :key="c.sha" class="card">
           <div class="card-header">

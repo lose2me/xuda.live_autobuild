@@ -43,11 +43,6 @@ export default hopeTheme({
       },
     },
 
-    slimsearch: {
-      indexContent: true,
-      hotKeys: [],
-    },
-
     components: {
       components: ["Badge"],
     },
