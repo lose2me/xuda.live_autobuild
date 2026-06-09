@@ -26,7 +26,7 @@
             class="expand-btn"
             @click="toggleExpand('latest')"
           >
-            {{ expanded.has('latest') ? '收起 ▲' : '展开 ▼' }}
+            {{ expanded.has('latest') ? '收起' : '展开' }}
           </button>
         </div>
         <div v-if="hasAndroid || hasIos" class="latest-downloads">
@@ -57,7 +57,7 @@
               class="expand-btn"
               @click="toggleExpand('r-' + r.id)"
             >
-              {{ expanded.has('r-' + r.id) ? '收起 ▲' : '展开 ▼' }}
+              {{ expanded.has('r-' + r.id) ? '收起' : '展开' }}
             </button>
           </div>
           <details v-if="r.assets && r.assets.length" class="assets">
@@ -99,7 +99,7 @@
               class="expand-btn"
               @click="toggleExpand('c-' + c.sha)"
             >
-              {{ expanded.has('c-' + c.sha) ? '收起 ▲' : '展开 ▼' }}
+              {{ expanded.has('c-' + c.sha) ? '收起' : '展开' }}
             </button>
           </div>
           <a :href="c.html_url" target="_blank" rel="noopener" class="link">
@@ -366,9 +366,6 @@ onMounted(async () => {
 }
 
 .expand-btn {
-  display: block;
-  width: 100%;
-  text-align: center;
   border: none;
   background: none;
   color: var(--vp-c-accent);

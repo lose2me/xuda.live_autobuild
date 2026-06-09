@@ -24,7 +24,7 @@ jobs:
                 print(a['browser_download_url']); sys.exit()
           ")
           if [ -n "$APK_URL" ]; then
-            curl -sfL "$APK_URL" -o data/app-arm64-v8a-release.apk
+            curl -fL --connect-timeout 10 --max-time 120 "$APK_URL" -o data/app-arm64-v8a-release.apk || echo "APK download failed, skipping"
           fi
           curl -sf "https://api.github.com/repos/lose2me/xzitpocket/commits?per_page=30" -o data/commits.json || echo "[]" > data/commits.json
           curl -sf -H "Accept: application/vnd.github.html" "https://api.github.com/repos/lose2me/xzitpocket/readme" -o data/readme.html || echo "" > data/readme.html
