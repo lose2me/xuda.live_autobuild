@@ -70,7 +70,7 @@
             </div>
           </details>
           <a :href="r.html_url" target="_blank" rel="noopener" class="link">
-            在 GitHub 上查看 &rarr;
+            在 GitHub 上查看
           </a>
         </div>
 
@@ -83,7 +83,7 @@
       <template v-else>
         <div v-for="c in commits" :key="c.sha" class="card">
           <div class="card-header">
-            <code class="sha">{{ c.sha.slice(0, 7) }}</code>
+            <span class="tag">{{ c.sha.slice(0, 7) }}</span>
             <span class="date">{{ formatDate(c.commit.author.date) }}</span>
           </div>
           <div class="card-body-wrap">
@@ -99,7 +99,7 @@
             </button>
           </div>
           <a :href="c.html_url" target="_blank" rel="noopener" class="link">
-            在 GitHub 上查看 &rarr;
+            在 GitHub 上查看
           </a>
         </div>
 
@@ -372,14 +372,6 @@ onMounted(async () => {
 
 .link:hover {
   text-decoration: underline;
-}
-
-.sha {
-  background: var(--vp-c-bg-soft);
-  padding: 0.1rem 0.4rem;
-  border-radius: 4px;
-  font-size: 0.82rem;
-  color: var(--vp-c-text);
 }
 
 .assets {
