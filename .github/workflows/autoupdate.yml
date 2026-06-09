@@ -85,3 +85,9 @@ jobs:
               done
           fi
           coscmd upload -rs data/ /api/xzitpocket/
+
+      - name: Sync xuda commits
+        run: |
+          mkdir -p xuda-data
+          curl -sf "https://api.github.com/repos/lose2me/xuda.live_autobuild/commits?per_page=30" -o xuda-data/commits.json || echo "[]" > xuda-data/commits.json
+          coscmd upload -rs xuda-data/ /api/xuda/

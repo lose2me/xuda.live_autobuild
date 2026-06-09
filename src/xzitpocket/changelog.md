@@ -1,5 +1,5 @@
 ---
-title: 更新日志
+title: 历史提交
 icon: clock-rotate-left
 ---
 

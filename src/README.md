@@ -39,3 +39,7 @@ highlights:
         details: 面向新生的沟通与联络入口。
         link: /freshman/contact.html
 ---
+
+## 文档更新记录
+
+<GitHubActivity repo="lose2me/xuda.live_autobuild" view="changelog" apiBase="/api/xuda" />

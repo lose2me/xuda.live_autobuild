@@ -77,13 +77,14 @@
       </template>
     </template>
 
-    <!-- 更新日志 -->
+    <!-- 历史提交 -->
     <template v-else-if="view === 'changelog'">
       <div v-if="commits.length === 0" class="empty">暂无提交记录</div>
       <template v-else>
         <div v-for="c in commits" :key="c.sha" class="card">
           <div class="card-header">
-            <span class="tag">{{ c.sha.slice(0, 7) }}</span>
+            <code class="sha">{{ c.sha.slice(0, 7) }}</code>
+            <span class="committer">{{ c.commit.committer.name }}</span>
             <span class="date">{{ formatDate(c.commit.author.date) }}</span>
           </div>
           <div class="card-body-wrap">
@@ -114,6 +115,7 @@ import { ref, computed, reactive, inject, onMounted } from "vue";
 const props = defineProps({
   repo: { type: String, required: true },
   view: { type: String, default: "readme" },
+  apiBase: { type: String, default: "/api/xzitpocket" },
 });
 
 const config = inject("xzitpocketConfig", {});
@@ -125,8 +127,6 @@ const commits = ref([]);
 const readme = ref("");
 const loading = ref(true);
 const expanded = reactive(new Set());
-
-const API_BASE = "/api/xzitpocket";
 
 const latestRelease = computed(() => releases.value.length ? releases.value[0] : null);
 const historyReleases = computed(() => releases.value.slice(1));
@@ -169,17 +169,17 @@ onMounted(async () => {
   try {
     const fetches = [];
     if (props.view === "releases") {
-      fetches.push(fetch(`${API_BASE}/releases.json`).then(r => r.ok && r.headers.get("content-type")?.includes("json") ? r.json() : []));
+      fetches.push(fetch(`${props.apiBase}/releases.json`).then(r => r.ok && r.headers.get("content-type")?.includes("json") ? r.json() : []));
     } else {
       fetches.push(Promise.resolve([]));
     }
     if (props.view === "changelog") {
-      fetches.push(fetch(`${API_BASE}/commits.json`).then(r => r.ok && r.headers.get("content-type")?.includes("json") ? r.json() : []));
+      fetches.push(fetch(`${props.apiBase}/commits.json`).then(r => r.ok && r.headers.get("content-type")?.includes("json") ? r.json() : []));
     } else {
       fetches.push(Promise.resolve([]));
     }
     if (props.view === "readme") {
-      fetches.push(fetch(`${API_BASE}/readme.html`).then(async r => {
+      fetches.push(fetch(`${props.apiBase}/readme.html`).then(async r => {
         if (!r.ok) return "";
         const t = await r.text();
         return t.startsWith("<!DOCTYPE") ? "" : t;
@@ -362,12 +362,26 @@ onMounted(async () => {
   text-decoration: underline;
 }
 
+.sha {
+  background: var(--vp-c-bg-soft);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  color: var(--vp-c-text);
+}
+
+.committer {
+  font-size: 0.85rem;
+  color: var(--vp-c-text-subtle);
+}
+
 .link {
-  display: inline-block;
+  display: block;
   margin-top: 0.5rem;
   font-size: 0.85rem;
   color: var(--vp-c-accent);
   text-decoration: none;
+  text-align: right;
 }
 
 .link:hover {
