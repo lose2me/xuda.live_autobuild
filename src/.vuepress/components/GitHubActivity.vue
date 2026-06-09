@@ -82,8 +82,9 @@
       <div v-if="commits.length === 0" class="empty">暂无提交记录</div>
       <template v-else>
         <h3 v-if="showUpdateTime" class="update-time-title">
-          文档更新于 {{ formatDate(commits[0].commit.author.date) }}
+          文档更新 {{ commits.length }} 次，最后编辑于 {{ formatDate(commits[0].commit.author.date) }}
         </h3>
+        <h3 v-if="headerText" class="section-title">{{ headerText }} [{{ commits.length }}]</h3>
         <div v-for="c in displayCommits" :key="c.sha" class="card">
           <div class="card-header">
             <code class="sha">{{ c.sha.slice(0, 7) }}</code>
@@ -121,6 +122,7 @@ const props = defineProps({
   apiBase: { type: String, default: "/api/xzitpocket" },
   limit: { type: Number, default: 0 },
   showUpdateTime: { type: Boolean, default: false },
+  headerText: { type: String, default: "" },
 });
 
 const config = inject("xzitpocketConfig", {});

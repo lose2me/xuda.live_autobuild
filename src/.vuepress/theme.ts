@@ -30,6 +30,18 @@ export default hopeTheme({
 
   plugins: {
 
+    git: {
+      contributors: {
+        avatar: false,
+        info: [
+          {
+            username: "lose2me",
+            name: "yezerpo",
+          },
+        ],
+      },
+    },
+
     components: {
       components: ["Badge"],
     },
