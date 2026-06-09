@@ -21,6 +21,7 @@ export default sidebar({
        children: [],
      },
    ],
+   "/doc-updates": false,
    "/xzitpocket/": [
      "",
      "releases",
