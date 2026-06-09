@@ -4,22 +4,22 @@ export default navbar([
   "/",
   {
     text: "新生知道",
-    icon: "book",
+    icon: "graduation-cap",
     link: "freshman/",
   },
   {
     text: "信息索引",
-    icon: "book",
+    icon: "compass",
     link: "freshman/",
   },
   {
     text: "掌上徐工",
-    icon: "mobile",
+    icon: "mobile-screen-button",
     link: "/xzitpocket/",
   },
   {
-    text: "校园墙[校群]",
-    icon: "book",
-    link: "freshman/",
+    text: "文档更新记录",
+    icon: "clock-rotate-left",
+    link: "/doc-updates.html",
   },
 ]);

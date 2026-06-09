@@ -17,6 +17,11 @@ actions:
     link: /freshman/faq.html
     type: default
 
+  - text: 校园墙[校群]
+    icon: comments
+    link: /freshman/contact.html
+    type: default
+
 highlights:
   - features:
       - title: 新生知道
@@ -40,6 +45,4 @@ highlights:
         link: /freshman/contact.html
 ---
 
-## 文档更新记录
-
-<GitHubActivity repo="lose2me/xuda.live_autobuild" view="changelog" apiBase="/api/xuda" />
+<GitHubActivity repo="lose2me/xuda.live_autobuild" view="changelog" apiBase="/api/xuda" :limit="1" showUpdateTime />

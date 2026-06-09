@@ -81,10 +81,13 @@
     <template v-else-if="view === 'changelog'">
       <div v-if="commits.length === 0" class="empty">暂无提交记录</div>
       <template v-else>
-        <div v-for="c in commits" :key="c.sha" class="card">
+        <h3 v-if="showUpdateTime" class="update-time-title">
+          文档更新于 {{ formatDate(commits[0].commit.author.date) }}
+        </h3>
+        <div v-for="c in displayCommits" :key="c.sha" class="card">
           <div class="card-header">
             <code class="sha">{{ c.sha.slice(0, 7) }}</code>
-            <span class="committer">{{ c.commit.committer.name }}</span>
+            <span class="committer">{{ c.committer?.login }}</span>
             <span class="date">{{ formatDate(c.commit.author.date) }}</span>
           </div>
           <div class="card-body-wrap">
@@ -116,6 +119,8 @@ const props = defineProps({
   repo: { type: String, required: true },
   view: { type: String, default: "readme" },
   apiBase: { type: String, default: "/api/xzitpocket" },
+  limit: { type: Number, default: 0 },
+  showUpdateTime: { type: Boolean, default: false },
 });
 
 const config = inject("xzitpocketConfig", {});
@@ -132,6 +137,9 @@ const latestRelease = computed(() => releases.value.length ? releases.value[0] :
 const historyReleases = computed(() => releases.value.slice(1));
 const hasAndroid = computed(() => androidUrl.value && androidUrl.value !== "#");
 const hasIos = computed(() => iosUrl.value && iosUrl.value !== "#");
+const displayCommits = computed(() =>
+  props.limit > 0 ? commits.value.slice(0, props.limit) : commits.value
+);
 
 function toggleExpand(key) {
   if (expanded.has(key)) expanded.delete(key);
@@ -222,6 +230,13 @@ onMounted(async () => {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+.update-time-title {
+  font-size: 1.1rem;
+  color: var(--vp-c-text);
+  margin-bottom: 0.8rem;
+  font-weight: 600;
 }
 
 .empty {
