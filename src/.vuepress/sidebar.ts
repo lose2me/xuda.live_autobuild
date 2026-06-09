@@ -6,7 +6,6 @@ export default sidebar({
      {
        text: "新生知道",
        icon: "graduation-cap",
-       link: "score",
        collapsible: true,
        children: [
          "score",
