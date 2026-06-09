@@ -17,9 +17,9 @@ actions:
     link: /guide/faq.html
     type: default
 
-  - text: 校园墙[校群]
-    icon: comments
-    link: /guide/contact.html
+  - text: 掌上徐工
+    icon: mobile-screen
+    link: /xzitpocket/
     type: default
 
 highlights:
