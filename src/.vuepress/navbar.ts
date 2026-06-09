@@ -3,14 +3,9 @@ import { navbar } from "vuepress-theme-hope";
 export default navbar([
   "/",
   {
-    text: "新生知道",
-    icon: "graduation-cap",
-    link: "freshman/",
-  },
-  {
     text: "信息索引",
     icon: "compass",
-    link: "freshman/",
+    link: "/guide/",
   },
   {
     text: "掌上徐工",

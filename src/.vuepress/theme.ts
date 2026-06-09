@@ -7,6 +7,7 @@ export default hopeTheme({
   hostname: "https://xuda.live",
   favicon: "/favicon.ico",
   docsDir: "src",
+  repo: "lose2me/xuda.live_autobuild",
   navbar,
 
   sidebar,
@@ -36,7 +37,7 @@ export default hopeTheme({
         info: [
           {
             username: "lose2me",
-            name: "yezerpo",
+            alias: ["yezerpo"],
           },
         ],
       },

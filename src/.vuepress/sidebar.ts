@@ -1,7 +1,21 @@
 import { sidebar } from "vuepress-theme-hope";
 
 export default sidebar({
-   "/freshman/": "structure",
+   "/guide/": [
+     "",
+     {
+       text: "新生知道",
+       icon: "graduation-cap",
+       link: "score",
+       collapsible: true,
+       children: [
+         "score",
+         "faq",
+         "items",
+         "contact",
+       ],
+     },
+   ],
    "/xzitpocket/": [
      "",
      "releases",
