@@ -152,7 +152,7 @@ function isLong(body) {
 
 function formatDate(iso) {
   const d = new Date(iso);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
 }
 
 function formatSize(bytes) {
@@ -346,6 +346,8 @@ onMounted(async () => {
   font-size: 0.9rem;
   line-height: 1.6;
   color: var(--vp-c-text);
+  overflow-x: hidden;
+  word-break: break-word;
 }
 
 .card-body.collapsed {
@@ -358,6 +360,8 @@ onMounted(async () => {
   color: var(--vp-c-text);
   white-space: pre-line;
   line-height: 1.5;
+  overflow-x: hidden;
+  word-break: break-word;
 }
 
 .commit-msg.collapsed {
@@ -456,6 +460,8 @@ onMounted(async () => {
 .readme-body {
   line-height: 1.7;
   color: var(--vp-c-text);
+  overflow-x: hidden;
+  word-break: break-word;
 }
 
 .readme-body :deep(h1),
@@ -505,6 +511,17 @@ onMounted(async () => {
   padding-left: 0.8rem;
   margin: 0.5rem 0;
   color: var(--vp-c-text-mute);
+}
+
+.readme-body :deep(pre) {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.readme-body :deep(table) {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 .readme-body :deep(img) {

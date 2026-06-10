@@ -17,14 +17,9 @@ actions:
     link: /guide/faq.html
     type: default
 
-  - text: 掌上徐工
-    icon: mobile-screen
-    link: /xzitpocket/
-    type: default
-
 highlights:
   - features:
-      - title: 新生知道
+      - title: 分数预测
         icon: streamline-sharp-color:select-all-flat
         details: 两校区入学与生活总览入口。
         link: /guide/
@@ -38,11 +33,6 @@ highlights:
         icon: streamline-color:archive-box-flat
         details: 快递点位与开学常用寄收信息。
         link: /guide/items.html
-
-      - title: 校友群组
-        icon: streamline-flex-color:user-collaborate-group-flat
-        details: 面向新生的沟通与联络入口。
-        link: /guide/contact.html
 ---
 
 <GitHubActivity repo="lose2me/xuda.live_autobuild" view="changelog" apiBase="/api/xuda" :limit="1" showUpdateTime />
