@@ -1,6 +1,6 @@
 ---
 title: 物品置备
-icon: streamline-color:archive-box-flat
+icon: fluent-emoji-flat:package
 order: 2
 ---
 

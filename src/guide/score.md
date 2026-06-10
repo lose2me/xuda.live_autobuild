@@ -1,4 +1,6 @@
 ---
 title: 分数预测
-icon: chart-line
+icon: fluent-emoji-flat:chart-increasing
 ---
+
+等待2026高考出分...

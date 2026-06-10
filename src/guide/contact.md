@@ -1,5 +1,5 @@
 ---
-title: 校友群组
-icon: streamline-flex-color:user-collaborate-group-flat
+title: 校园社群
+icon: fluent-emoji-flat:people-hugging
 order: 5
 ---

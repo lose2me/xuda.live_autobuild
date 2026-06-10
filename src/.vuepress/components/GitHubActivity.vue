@@ -82,7 +82,7 @@
       <div v-if="commits.length === 0" class="empty">暂无提交记录</div>
       <template v-else>
         <h3 v-if="showUpdateTime" class="update-time-title">
-          文档已更新 {{ commits.length }} 次，最后编辑于 {{ formatDate(commits[0].commit.author.date) }}
+          文档已更新 {{ commits.length }} 次，最后编辑于 {{ formatDate(commits[0].commit.author.date, false) }}
         </h3>
         <div v-for="(c, index) in displayCommits" :key="c.sha" class="card">
           <div class="card-header">
@@ -150,9 +150,11 @@ function isLong(body) {
   return body && body.split("\n").length > 5;
 }
 
-function formatDate(iso) {
+function formatDate(iso, showTime = true) {
   const d = new Date(iso);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  const date = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  if (!showTime) return date;
+  return `${date} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
 }
 
 function formatSize(bytes) {
