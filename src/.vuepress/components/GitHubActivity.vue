@@ -18,16 +18,9 @@
         </div>
         <div v-if="latestRelease.body" class="card-body-wrap">
           <div
-            :class="['card-body', { collapsed: !expanded.has('latest') }]"
+            class="card-body"
             v-html="renderBody(latestRelease.body)"
           ></div>
-          <button
-            v-if="isLong(latestRelease.body)"
-            class="expand-btn"
-            @click="toggleExpand('latest')"
-          >
-            {{ expanded.has('latest') ? '收起' : '展开' }}
-          </button>
         </div>
         <div v-if="hasAndroid || hasIos" class="latest-downloads">
           <a v-if="hasAndroid" :href="androidUrl" target="_blank" rel="noopener" class="dl-btn">
