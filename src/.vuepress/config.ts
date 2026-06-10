@@ -1,5 +1,6 @@
 import { defineUserConfig } from "vuepress";
 import { viteBundler } from "@vuepress/bundler-vite";
+import { meilisearchPlugin } from "@vuepress/plugin-meilisearch";
 
 import theme from "./theme.js";
 
@@ -29,4 +30,12 @@ export default defineUserConfig({
   }),
   
   theme,
+
+  plugins: [
+    meilisearchPlugin({
+      host: "https://search.xuda.live",
+      apiKey: "6c15af9a2b4be8b991517f6c91f943a938d2464c2ab8dbe510f11b90f0f89b83",
+      indexUid: "xuda",
+    }),
+  ],
 });

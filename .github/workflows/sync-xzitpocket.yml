@@ -12,6 +12,9 @@ jobs:
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Fetch GitHub data
         run: |
           mkdir -p data/images
@@ -53,3 +56,15 @@ jobs:
       - name: Upload to COS
         run: |
           coscmd upload -rs data/ /api/xzitpocket/
+
+      - name: Scrape docs for MeiliSearch
+        env:
+          HOST_URL: https://search.xuda.live
+          API_KEY: ${{ secrets.MEILISEARCH_MASTER_KEY }}
+          CONFIG_FILE_PATH: ${{ github.workspace }}/src/.vuepress/meilisearch-config.json
+        run: |
+          docker run -t --rm \
+            -e MEILISEARCH_HOST_URL=$HOST_URL \
+            -e MEILISEARCH_API_KEY=$API_KEY \
+            -v $CONFIG_FILE_PATH:/docs-scraper/config.json \
+            jqiue/docs-scraper:latest pipenv run ./docs_scraper config.json

@@ -31,6 +31,8 @@ export default hopeTheme({
 
   plugins: {
 
+    slimsearch: false,
+
     git: {
       contributors: {
         avatar: false,

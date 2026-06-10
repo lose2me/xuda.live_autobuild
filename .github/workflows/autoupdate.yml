@@ -101,3 +101,15 @@ jobs:
           mkdir -p xuda-data
           curl -sf "https://api.github.com/repos/lose2me/xuda.live_autobuild/commits?per_page=30" -o xuda-data/commits.json || echo "[]" > xuda-data/commits.json
           coscmd upload -rs xuda-data/ /api/xuda/
+
+      - name: Scrape docs for MeiliSearch
+        env:
+          HOST_URL: https://search.xuda.live
+          API_KEY: ${{ secrets.MEILISEARCH_MASTER_KEY }}
+          CONFIG_FILE_PATH: ${{ github.workspace }}/src/.vuepress/meilisearch-config.json
+        run: |
+          docker run -t --rm \
+            -e MEILISEARCH_HOST_URL=$HOST_URL \
+            -e MEILISEARCH_API_KEY=$API_KEY \
+            -v $CONFIG_FILE_PATH:/docs-scraper/config.json \
+            jqiue/docs-scraper:latest pipenv run ./docs_scraper config.json
