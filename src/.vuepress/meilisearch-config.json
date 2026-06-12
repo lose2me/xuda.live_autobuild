@@ -2,19 +2,20 @@
   "index_uid": "xuda",
   "start_urls": ["https://xuda.live/"],
   "sitemap_urls": ["https://xuda.live/sitemap.xml"],
+  "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
   "selectors": {
     "lvl0": {
-      "selector": ".vp-sidebar-heading.active",
+      "selector": "#nonexistent",
       "global": true,
-      "default_value": "Documentation"
+      "default_value": ""
     },
-    "lvl1": "[vp-content] h1",
-    "lvl2": "[vp-content] h2",
-    "lvl3": "[vp-content] h3",
-    "lvl4": "[vp-content] h4",
-    "lvl5": "[vp-content] h5",
-    "lvl6": "[vp-content] h6",
-    "content": "[vp-content] p, [vp-content] li",
+    "lvl1": ".vp-page h1",
+    "lvl2": "#markdown-content h2",
+    "lvl3": "#markdown-content h3",
+    "lvl4": "#markdown-content h4",
+    "lvl5": "#markdown-content h5",
+    "lvl6": "#markdown-content h6",
+    "content": "#markdown-content p, #markdown-content li",
     "lang": {
       "selector": "/html/@lang",
       "global": true,

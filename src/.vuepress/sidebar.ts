@@ -13,11 +13,11 @@ export default sidebar({
          "dorm",
          "items",
          "passwords",
-         "network",
          "campuscard",
          "food",
          "transport",
          "transfer",
+         "faq",
        ],
      },
      {
@@ -37,7 +37,6 @@ export default sidebar({
      "services",
      "recharge",
      "reissue",
-     "faq",
      "contact",
      {
        text: "聚合APP",
