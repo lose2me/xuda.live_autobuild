@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -83,7 +85,21 @@ jobs:
           if [ -n "$APK_URL" ]; then
             curl -fL --connect-timeout 10 --max-time 120 "$APK_URL" -o data/app-arm64-v8a-release.apk || echo "APK download failed, skipping"
           fi
-          curl -sf "https://api.github.com/repos/lose2me/xzitpocket/commits?per_page=30" -o data/commits.json || echo "[]" > data/commits.json
+          git clone --bare https://github.com/lose2me/xzitpocket.git /tmp/xzitpocket-bare 2>/dev/null && \
+            git --git-dir=/tmp/xzitpocket-bare log --format='%H%x00%aN%x00%aI%x00%B%x00' | python3 -c "
+          import sys, json
+          data = sys.stdin.read().split('\x00')
+          entries, i = [], 0
+          while i + 3 < len(data):
+              sha = data[i].strip()
+              if not sha:
+                  i += 1
+                  continue
+              entries.append({'sha': sha, 'committer': {'login': data[i+1]}, 'commit': {'author': {'date': data[i+2]}, 'message': data[i+3].strip()}, 'html_url': 'https://github.com/lose2me/xzitpocket/commit/' + sha})
+              i += 4
+          json.dump(entries, open('data/commits.json', 'w'), ensure_ascii=False)
+          " || echo '[]' > data/commits.json
+          rm -rf /tmp/xzitpocket-bare 2>/dev/null || true
           curl -sf -H "Accept: application/vnd.github.html" "https://api.github.com/repos/lose2me/xzitpocket/readme" -o data/readme.html || echo "" > data/readme.html
           if [ -s data/readme.html ]; then
             grep -oE 'https://(github\.com|raw\.githubusercontent\.com)/lose2me/xzitpocket/[^"]+' data/readme.html | \
@@ -99,7 +115,19 @@ jobs:
       - name: Sync xuda commits
         run: |
           mkdir -p xuda-data
-          curl -sf "https://api.github.com/repos/lose2me/xuda.live_autobuild/commits?per_page=30" -o xuda-data/commits.json || echo "[]" > xuda-data/commits.json
+          git log --format='%H%x00%aN%x00%aI%x00%B%x00' | python3 -c "
+          import sys, json
+          data = sys.stdin.read().split('\x00')
+          entries, i = [], 0
+          while i + 3 < len(data):
+              sha = data[i].strip()
+              if not sha:
+                  i += 1
+                  continue
+              entries.append({'sha': sha, 'committer': {'login': data[i+1]}, 'commit': {'author': {'date': data[i+2]}, 'message': data[i+3].strip()}, 'html_url': 'https://github.com/lose2me/xuda.live_autobuild/commit/' + sha})
+              i += 4
+          json.dump(entries, open('xuda-data/commits.json', 'w'), ensure_ascii=False)
+          "
           coscmd upload -rs xuda-data/ /api/xuda/
 
       - name: Scrape docs for MeiliSearch
