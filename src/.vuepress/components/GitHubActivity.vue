@@ -158,6 +158,7 @@ function formatSize(bytes) {
 
 function renderBody(md) {
   const escaped = md
+    .replace(/\r/g, "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
