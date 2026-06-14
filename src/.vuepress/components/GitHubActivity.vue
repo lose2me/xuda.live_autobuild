@@ -157,15 +157,51 @@ function formatSize(bytes) {
 }
 
 function renderBody(md) {
-  return md
+  const escaped = md
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/^### (.+)$/gm, "<strong>$1</strong>")
-    .replace(/^## (.+)$/gm, "<strong>$1</strong>")
-    .replace(/^- (.+)$/gm, "&#8226; $1")
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\n/g, "<br>");
+    .replace(/>/g, "&gt;");
+
+  const lines = escaped.split("\n");
+  let result = "";
+  let openLevels = 0;
+  let prevWasList = false;
+
+  for (const line of lines) {
+    const m = line.match(/^(\s*)- (.+)$/);
+    if (m) {
+      const level = Math.floor(m[1].length / 2) + 1;
+      const text = m[2]
+        .replace(/^### (.+)$/, "<strong>$1</strong>")
+        .replace(/^## (.+)$/, "<strong>$1</strong>")
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+
+      if (level > openLevels) {
+        while (openLevels < level) { result += "<ul>"; openLevels++; }
+      } else if (level < openLevels) {
+        while (openLevels > level) { result += "</li></ul>"; openLevels--; }
+        result += "</li>";
+      } else if (prevWasList) {
+        result += "</li>";
+      }
+
+      result += `<li>${text}`;
+      prevWasList = true;
+    } else {
+      while (openLevels > 0) { result += "</li></ul>"; openLevels--; }
+      prevWasList = false;
+
+      const processed = line
+        .replace(/^### (.+)$/, "<strong>$1</strong>")
+        .replace(/^## (.+)$/, "<strong>$1</strong>")
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+      if (result && processed) result += "<br>";
+      result += processed;
+    }
+  }
+  while (openLevels > 0) { result += "</li></ul>"; openLevels--; }
+
+  return result;
 }
 
 onMounted(async () => {
@@ -348,6 +384,20 @@ onMounted(async () => {
 .card-body.collapsed {
   max-height: 8em;
   overflow: hidden;
+}
+
+.card-body :deep(ul) {
+  padding-left: 1.5rem;
+  margin: 0.2rem 0;
+  list-style: disc;
+}
+
+.card-body :deep(ul ul) {
+  list-style: circle;
+}
+
+.card-body :deep(li) {
+  margin: 0.15rem 0;
 }
 
 .commit-msg {
