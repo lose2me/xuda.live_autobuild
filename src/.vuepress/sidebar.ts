@@ -41,7 +41,7 @@ export default sidebar({
      {
        text: "聚合APP",
        icon: "fluent-emoji-flat:mobile-phone",
-       link: "/download",
+       link: "/download.html",
      },
    ],
    "/doc-updates": false,

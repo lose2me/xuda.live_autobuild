@@ -32,7 +32,7 @@ highlights:
       - title: 掌上徐工
         icon: mobile-screen-button
         details: 开源，高性能，高颜值的校园助手APP
-        link: /download
+        link: /download.html
 ---
 
 <GitHubActivity repo="lose2me/xuda.live_autobuild" view="changelog" apiBase="/api/xuda" :limit="1" showUpdateTime />
