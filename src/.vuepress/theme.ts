@@ -31,6 +31,13 @@ export default hopeTheme({
 
   plugins: {
 
+    redirect: {
+      config: {
+        "/download": "/xzitpocket/releases.html",
+        "/download.html": "/xzitpocket/releases.html",
+      },
+    },
+
     slimsearch: false,
 
     meilisearch: {

@@ -41,7 +41,7 @@ export default sidebar({
      {
        text: "聚合APP",
        icon: "fluent-emoji-flat:mobile-phone",
-       link: "/download.html",
+       link: "/xzitpocket/releases.html",
      },
    ],
    "/doc-updates": false,
