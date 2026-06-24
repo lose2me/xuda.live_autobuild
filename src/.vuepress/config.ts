@@ -1,5 +1,6 @@
 import { defineUserConfig } from "vuepress";
 import { viteBundler } from "@vuepress/bundler-vite";
+import { llmsPlugin } from "@vuepress/plugin-llms";
 
 import theme from "./theme.js";
 
@@ -28,5 +29,11 @@ export default defineUserConfig({
     },
   }),
   
+  plugins: [
+    llmsPlugin({
+      domain: "https://xuda.live",
+    }),
+  ],
+
   theme,
 });
