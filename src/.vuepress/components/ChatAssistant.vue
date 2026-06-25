@@ -150,7 +150,7 @@ async function send() {
 
 <style scoped>
 .chat-assistant {
-  margin: 2rem auto 0;
+  margin: 0.5rem auto 0;
   max-width: 860px;
   border: 1px solid var(--vp-c-border);
   border-radius: 12px;
