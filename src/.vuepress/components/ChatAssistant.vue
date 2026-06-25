@@ -1,6 +1,9 @@
 <template>
   <div class="chat-wrapper">
-    <div class="chat-header">徐工校园助手</div>
+    <div class="chat-header">
+      <img class="header-avatar" src="/ai.webp" alt="" />
+      徐工校园助手
+    </div>
     <McLayoutContent ref="msgAreaRef" class="msg-area">
       <div v-if="messages.length === 0" class="chat-empty">
         <div class="intro-center">
@@ -147,6 +150,16 @@ async function send(q) {
   font-weight: 600;
   font-size: 1rem;
   color: var(--vp-c-text);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.header-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .chat-empty {
