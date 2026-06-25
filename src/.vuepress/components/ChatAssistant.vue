@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, h } from 'vue';
 import OpenAI from 'openai';
 import { McBubble, McInput, McLayoutContent, McLayoutSender, McPrompt, McMarkdownCard, McIntroduction } from '@matechat/core';
 
@@ -51,9 +51,11 @@ const description = [
   '答案由 AI 生成，仅供参考，具体以学校最新通知为准。',
 ];
 
+const icon = (name) => ({ render: () => h('iconify-icon', { icon: name }) });
+
 const prompts = [
-  { value: 'dorm', label: '住宿条件', iconConfig: { name: 'icon-homepage' }, desc: '宿舍配置、空调、卫浴等' },
-  { value: 'campus', label: '校园环境', iconConfig: { name: 'icon-environment' }, desc: '食堂、超市、交通等' },
+  { value: 'dorm', label: '住宿条件', iconConfig: { component: icon('fluent-emoji-flat:bed') }, desc: '宿舍配置、空调、卫浴等' },
+  { value: 'campus', label: '校园环境', iconConfig: { component: icon('fluent-emoji-flat:school') }, desc: '食堂、超市、交通等' },
 ];
 
 async function send(q) {
