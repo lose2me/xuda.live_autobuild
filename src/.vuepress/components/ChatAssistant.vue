@@ -16,7 +16,7 @@
         :variant="m.from === 'user' ? 'filled' : 'bordered'"
         :loading="m.loading"
       >
-        <McMarkdownCard v-if="m.from === 'model'" :content="m.content" />
+        <McMarkdownCard v-if="m.from === 'model'" :content="m.content" :typing="true" />
         <span v-else>{{ m.content }}</span>
       </McBubble>
       </div>
