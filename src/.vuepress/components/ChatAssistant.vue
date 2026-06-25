@@ -74,11 +74,12 @@ async function send(q) {
       stream: true,
     });
 
-    messages.value[msgIdx].loading = false;
-
     for await (const chunk of stream) {
       const delta = chunk.choices?.[0]?.delta?.content;
       if (delta) {
+        if (messages.value[msgIdx].loading) {
+          messages.value[msgIdx].loading = false;
+        }
         messages.value[msgIdx].content += delta;
       }
     }
@@ -108,7 +109,7 @@ async function send(q) {
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.2rem;
 }
 
 .chat-header {
