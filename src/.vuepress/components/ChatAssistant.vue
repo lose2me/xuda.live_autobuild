@@ -3,7 +3,11 @@
     <div class="chat-header">徐工校园助手</div>
     <McLayoutContent class="msg-area">
       <div v-if="messages.length === 0" class="chat-empty">
-        <div class="prompt-label">试试问：</div>
+        <McIntroduction
+          :title="'徐工校园助手'"
+          :subTitle="'Hi，有什么可以帮你的？'"
+          :description="description"
+        />
         <McPrompt :list="prompts" direction="vertical" class="prompt-list" @itemClick="send($event.label)" />
       </div>
       <McBubble
@@ -32,7 +36,7 @@
 <script setup>
 import { ref } from 'vue';
 import OpenAI from 'openai';
-import { McBubble, McInput, McLayoutContent, McLayoutSender, McPrompt, McMarkdownCard } from '@matechat/core';
+import { McBubble, McInput, McLayoutContent, McLayoutSender, McPrompt, McMarkdownCard, McIntroduction } from '@matechat/core';
 
 const client = new OpenAI({
   baseURL: 'https://search.xuda.live/chats/xuda-assistant',
@@ -42,6 +46,11 @@ const client = new OpenAI({
 
 const input = ref('');
 const messages = ref([]);
+const description = [
+  '基于徐工生活指南文档，为你解答宿舍、食堂、课程、军训等校园问题。',
+  '答案由 AI 生成，仅供参考，具体以学校最新通知为准。',
+];
+
 const prompts = [
   { value: 'dorm', label: '住宿条件', desc: '宿舍配置、空调、卫浴等' },
   { value: 'campus', label: '校园环境', desc: '食堂、超市、交通等' },
@@ -111,15 +120,14 @@ async function send(q) {
 
 .chat-empty {
   padding: 1.5rem 1rem;
-}
-
-.prompt-label {
-  color: var(--vp-c-text-subtle);
-  font-size: 0.85rem;
-  margin-bottom: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .prompt-list {
   max-width: 360px;
+  width: 100%;
 }
 </style>
