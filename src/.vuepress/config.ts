@@ -26,6 +26,11 @@ export default defineUserConfig({
           },
         },
       },
+      build: {
+        rolldownOptions: {
+          external: ['mermaid'],
+        },
+      },
     },
   }),
   
