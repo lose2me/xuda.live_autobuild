@@ -95,40 +95,19 @@ async function send() {
   streaming.value = true;
   streamText.value = '';
 
-  try {
-    const res = await fetch(CHAT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${CHAT_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [{ role: 'user', content: q }],
-        stream: true,
-        tools: [
-          { type: 'function', function: { name: '_meiliSearchProgress', description: 'Reports real-time search progress to the user' } },
-          { type: 'function', function: { name: '_meiliSearchSources', description: 'Provides sources and references for the information' } },
-        ],
-      }),
-    });
+  await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    let lastIndex = 0;
 
-    if (!res.ok) {
-      const err = await res.text();
-      throw new Error(err);
-    }
+    xhr.open('POST', CHAT_URL);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Authorization', `Bearer ${CHAT_KEY}`);
 
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
+    xhr.onprogress = () => {
+      const newText = xhr.responseText.substring(lastIndex);
+      lastIndex = xhr.responseText.length;
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
-
+      const lines = newText.split('\n');
       for (const line of lines) {
         if (line.startsWith('data: ')) {
           const data = line.slice(6);
@@ -143,10 +122,24 @@ async function send() {
           } catch {}
         }
       }
-    }
-  } catch (e) {
-    streamText.value = '出错了：' + (e.message || '网络异常');
-  }
+    };
+
+    xhr.onload = () => resolve();
+    xhr.onerror = () => reject(new Error('网络异常'));
+    xhr.onabort = () => reject(new Error('请求被取消'));
+
+    xhr.send(JSON.stringify({
+      model: 'deepseek-chat',
+      messages: [{ role: 'user', content: q }],
+      stream: true,
+      tools: [
+        { type: 'function', function: { name: '_meiliSearchProgress', description: 'Reports real-time search progress to the user' } },
+        { type: 'function', function: { name: '_meiliSearchSources', description: 'Provides sources and references for the information' } },
+      ],
+    }));
+  }).catch(e => {
+    if (!streamText.value) streamText.value = '出错了：' + e.message;
+  });
 
   if (streamText.value) {
     messages.value.push({ role: 'assistant', content: streamText.value });
