@@ -129,7 +129,7 @@ async function send() {
     xhr.onabort = () => reject(new Error('请求被取消'));
 
     xhr.send(JSON.stringify({
-      model: 'deepseek-chat',
+      model: 'deepseek-v4-flash',
       messages: [{ role: 'user', content: q }],
       stream: true,
       tools: [
