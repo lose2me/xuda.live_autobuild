@@ -2,7 +2,7 @@
   <div class="chat-assistant">
     <div class="chat-header">
       <span class="chat-title">
-        <span class="chat-icon">🤖</span> 徐工校园助手
+徐工校园助手
       </span>
     </div>
 
@@ -170,10 +170,6 @@ async function send() {
   font-weight: 600;
   font-size: 1rem;
   color: var(--vp-c-text);
-}
-
-.chat-icon {
-  margin-right: 0.3rem;
 }
 
 .chat-body {
