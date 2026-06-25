@@ -65,13 +65,68 @@ function scrollBottom() {
 
 function renderContent(text) {
   if (!text) return '';
-  return text
+  let html = text
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\n/g, '<br>')
-    .replace(/`([^`]+)`/g, '<code>$1</code>');
+    .replace(/>/g, '&gt;');
+
+  const lines = html.split('\n');
+  let out = '';
+  let inList = false;
+  let listTag = '';
+
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+
+    // Inline formatting
+    line = line
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>');
+
+    // Headers
+    if (/^### (.+)$/.test(line)) {
+      if (inList) { out += '</' + listTag + '>'; inList = false; }
+      line = line.replace(/^### (.+)$/, '<h4>$1</h4>');
+    } else if (/^## (.+)$/.test(line)) {
+      if (inList) { out += '</' + listTag + '>'; inList = false; }
+      line = line.replace(/^## (.+)$/, '<h3>$1</h3>');
+    }
+    // Unordered list
+    else if (/^- (.+)$/.test(line)) {
+      if (!inList || listTag !== 'ul') {
+        if (inList) out += '</' + listTag + '>';
+        out += '<ul>';
+        inList = true;
+        listTag = 'ul';
+      }
+      line = line.replace(/^- (.+)$/, '<li>$1</li>');
+    }
+    // Ordered list
+    else if (/^\d+\. (.+)$/.test(line)) {
+      if (!inList || listTag !== 'ol') {
+        if (inList) out += '</' + listTag + '>';
+        out += '<ol>';
+        inList = true;
+        listTag = 'ol';
+      }
+      line = line.replace(/^\d+\. (.+)$/, '<li>$1</li>');
+    }
+    // Empty line
+    else if (line.trim() === '') {
+      if (inList) { out += '</' + listTag + '>'; inList = false; }
+      line = '<br>';
+    }
+    // Regular paragraph
+    else {
+      if (inList) { out += '</' + listTag + '>'; inList = false; }
+    }
+
+    out += line;
+  }
+  if (inList) out += '</' + listTag + '>';
+
+  return out;
 }
 
 async function send() {
@@ -225,10 +280,12 @@ async function send() {
 
 .chat-msg.user .msg-content {
   background: var(--vp-c-accent-soft);
+  border: 1px solid var(--vp-c-accent);
 }
 
 .chat-msg.assistant .msg-content {
   background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
 }
 
 .chat-msg.streaming .msg-content {
@@ -255,6 +312,30 @@ async function send() {
 
 .msg-content :deep(strong) {
   font-weight: 600;
+}
+
+.msg-content :deep(em) {
+  font-style: italic;
+}
+
+.msg-content :deep(h3),
+.msg-content :deep(h4) {
+  margin: 0.4rem 0 0.2rem;
+  font-weight: 600;
+  color: var(--vp-c-accent);
+}
+
+.msg-content :deep(h3) { font-size: 1rem; }
+.msg-content :deep(h4) { font-size: 0.95rem; }
+
+.msg-content :deep(ul),
+.msg-content :deep(ol) {
+  padding-left: 1.2rem;
+  margin: 0.2rem 0;
+}
+
+.msg-content :deep(li) {
+  margin: 0.15rem 0;
 }
 
 .chat-input-row {
