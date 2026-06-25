@@ -1,4 +1,5 @@
 import { defineClientConfig } from "vuepress/client";
+import '@devui-design/icons/icomoon/devui-icon.css';
 import { defineAsyncComponent } from "vue";
 import GitHubActivity from "./components/GitHubActivity.vue";
 import xzitpocketConfig from "../../xzitpocket.config.json";
