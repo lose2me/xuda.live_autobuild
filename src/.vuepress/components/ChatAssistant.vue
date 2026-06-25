@@ -4,7 +4,7 @@
     <McLayoutContent class="msg-area">
       <div v-if="messages.length === 0" class="chat-empty">
         <div class="prompt-label">试试问：</div>
-        <McPrompt :list="prompts" direction="horizontal" class="prompt-list" @itemClick="send($event.label)" />
+        <McPrompt :list="prompts" direction="vertical" class="prompt-list" @itemClick="send($event.label)" />
       </div>
       <McBubble
         v-for="(m, i) in messages"
@@ -41,8 +41,8 @@ const client = new OpenAI({
 const input = ref('');
 const messages = ref([]);
 const prompts = [
-  { value: 'dorm', label: '住宿条件' },
-  { value: 'campus', label: '校园环境' },
+  { value: 'dorm', label: '住宿条件', desc: '宿舍配置、空调、卫浴等' },
+  { value: 'campus', label: '校园环境', desc: '食堂、超市、交通等' },
 ];
 
 async function send(q) {
@@ -108,8 +108,7 @@ async function send(q) {
 }
 
 .chat-empty {
-  text-align: center;
-  padding: 2rem 0;
+  padding: 1.5rem 1rem;
 }
 
 .prompt-label {
@@ -119,6 +118,6 @@ async function send(q) {
 }
 
 .prompt-list {
-  justify-content: center;
+  max-width: 360px;
 }
 </style>
