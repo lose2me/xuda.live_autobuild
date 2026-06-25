@@ -16,6 +16,7 @@
     "@vuepress/plugin-llms": "2.0.0-rc.130",
     "@vuepress/plugin-meilisearch": "2.0.0-rc.130",
     "@vuepress/plugin-umami-analytics": "2.0.0-rc.130",
+    "marked": "^18.0.5",
     "sass-embedded": "^1.99.0",
     "vue": "^3.5.34",
     "vuepress": "2.0.0-rc.30",

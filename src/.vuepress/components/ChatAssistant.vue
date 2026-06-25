@@ -17,11 +17,11 @@
           :class="['chat-msg', m.role]"
         >
           <div class="msg-role">{{ m.role === 'user' ? '你' : '助手' }}</div>
-          <div class="msg-content" v-html="renderContent(m.content)"></div>
+          <div class="msg-content" v-html="renderMarkdown(m.content)"></div>
         </div>
         <div v-if="streaming" class="chat-msg assistant streaming">
           <div class="msg-role">助手</div>
-          <div class="msg-content" v-html="renderContent(streamText)"></div>
+          <div class="msg-content" v-html="renderStreaming(streamText)"></div>
           <span class="cursor">|</span>
         </div>
       </div>
@@ -44,6 +44,7 @@
 
 <script setup>
 import { ref, nextTick } from 'vue';
+import { marked } from 'marked';
 
 const CHAT_URL = 'https://search.xuda.live/chats/xuda-assistant/chat/completions';
 const CHAT_KEY = 'e1c235a8f87cad6e9afbec885c0a3c1d356b268985261add1c16c6f171d86938';
@@ -63,70 +64,24 @@ function scrollBottom() {
   });
 }
 
-function renderContent(text) {
+function renderMarkdown(text) {
   if (!text) return '';
-  let html = text
+  try {
+    return marked.parse(text);
+  } catch {
+    return text.replace(/</g, '&lt;').replace(/\n/g, '<br>');
+  }
+}
+
+function renderStreaming(text) {
+  if (!text) return '';
+  return text
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-
-  const lines = html.split('\n');
-  let out = '';
-  let inList = false;
-  let listTag = '';
-
-  for (let i = 0; i < lines.length; i++) {
-    let line = lines[i];
-
-    // Inline formatting
-    line = line
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.+?)\*/g, '<em>$1</em>')
-      .replace(/`([^`]+)`/g, '<code>$1</code>');
-
-    // Headers
-    if (/^### (.+)$/.test(line)) {
-      if (inList) { out += '</' + listTag + '>'; inList = false; }
-      line = line.replace(/^### (.+)$/, '<h4>$1</h4>');
-    } else if (/^## (.+)$/.test(line)) {
-      if (inList) { out += '</' + listTag + '>'; inList = false; }
-      line = line.replace(/^## (.+)$/, '<h3>$1</h3>');
-    }
-    // Unordered list
-    else if (/^- (.+)$/.test(line)) {
-      if (!inList || listTag !== 'ul') {
-        if (inList) out += '</' + listTag + '>';
-        out += '<ul>';
-        inList = true;
-        listTag = 'ul';
-      }
-      line = line.replace(/^- (.+)$/, '<li>$1</li>');
-    }
-    // Ordered list
-    else if (/^\d+\. (.+)$/.test(line)) {
-      if (!inList || listTag !== 'ol') {
-        if (inList) out += '</' + listTag + '>';
-        out += '<ol>';
-        inList = true;
-        listTag = 'ol';
-      }
-      line = line.replace(/^\d+\. (.+)$/, '<li>$1</li>');
-    }
-    // Empty line
-    else if (line.trim() === '') {
-      if (inList) { out += '</' + listTag + '>'; inList = false; }
-      line = '<br>';
-    }
-    // Regular paragraph
-    else {
-      if (inList) { out += '</' + listTag + '>'; inList = false; }
-    }
-
-    out += line;
-  }
-  if (inList) out += '</' + listTag + '>';
-
-  return out;
+    .replace(/>/g, '&gt;')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>');
 }
 
 async function send() {
@@ -336,6 +291,42 @@ async function send() {
 
 .msg-content :deep(li) {
   margin: 0.15rem 0;
+}
+
+.msg-content :deep(table) {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.4rem 0;
+  font-size: 0.85rem;
+}
+
+.msg-content :deep(th),
+.msg-content :deep(td) {
+  border: 1px solid var(--vp-c-border);
+  padding: 0.3rem 0.6rem;
+  text-align: left;
+}
+
+.msg-content :deep(th) {
+  background: var(--vp-c-bg-soft);
+  font-weight: 600;
+}
+
+.msg-content :deep(blockquote) {
+  border-left: 3px solid var(--vp-c-accent);
+  padding-left: 0.6rem;
+  margin: 0.4rem 0;
+  color: var(--vp-c-text-mute);
+}
+
+.msg-content :deep(p) {
+  margin: 0.3rem 0;
+}
+
+.msg-content :deep(hr) {
+  border: none;
+  border-top: 1px solid var(--vp-c-border);
+  margin: 0.5rem 0;
 }
 
 .chat-input-row {
