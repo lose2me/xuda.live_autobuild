@@ -17,6 +17,8 @@
         :align="m.from === 'user' ? 'right' : 'left'"
         :variant="m.from === 'user' ? 'filled' : 'bordered'"
         :loading="m.loading"
+        avatarPosition="side"
+        :avatarConfig="m.from === 'user' ? { name: '我' } : { imgSrc: '/logo.png' }"
       >
         <template #loadingTpl>
           <span>咪正在思考 ...</span>
