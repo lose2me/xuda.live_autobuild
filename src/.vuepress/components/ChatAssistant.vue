@@ -9,11 +9,13 @@
       <McBubble
         v-for="(m, i) in messages"
         :key="i"
-        :content="m.content"
         :align="m.from === 'user' ? 'right' : 'left'"
         :variant="m.from === 'user' ? 'filled' : 'bordered'"
         :loading="m.loading"
-      />
+      >
+        <McMarkdownCard v-if="m.from === 'model'" :content="m.content" />
+        <span v-else>{{ m.content }}</span>
+      </McBubble>
     </McLayoutContent>
 
     <McLayoutSender>
@@ -30,7 +32,7 @@
 <script setup>
 import { ref } from 'vue';
 import OpenAI from 'openai';
-import { McBubble, McInput, McLayoutContent, McLayoutSender, McPrompt } from '@matechat/core';
+import { McBubble, McInput, McLayoutContent, McLayoutSender, McPrompt, McMarkdownCard } from '@matechat/core';
 
 const client = new OpenAI({
   baseURL: 'https://search.xuda.live/chats/xuda-assistant',
