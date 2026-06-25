@@ -35,4 +35,8 @@ highlights:
         link: /xzitpocket/releases.html
 ---
 
+<ChatAssistant />
+
+---
+
 <GitHubActivity repo="lose2me/xuda.live_autobuild" view="changelog" apiBase="/api/xuda" :limit="1" showUpdateTime />
