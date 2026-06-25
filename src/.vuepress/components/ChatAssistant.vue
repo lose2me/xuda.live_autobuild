@@ -36,6 +36,7 @@
 import { ref } from 'vue';
 import OpenAI from 'openai';
 import { McBubble, McInput, McLayoutContent, McLayoutSender, McPrompt, McMarkdownCard, McIntroduction } from '@matechat/core';
+import '@devui-design/icons/icomoon/devui-icon.css';
 
 const client = new OpenAI({
   baseURL: 'https://search.xuda.live/chats/xuda-assistant',
@@ -51,8 +52,8 @@ const description = [
 ];
 
 const prompts = [
-  { value: 'dorm', label: '住宿条件', desc: '宿舍配置、空调、卫浴等' },
-  { value: 'campus', label: '校园环境', desc: '食堂、超市、交通等' },
+  { value: 'dorm', label: '住宿条件', iconConfig: { name: 'icon-home' }, desc: '宿舍配置、空调、卫浴等' },
+  { value: 'campus', label: '校园环境', iconConfig: { name: 'icon-building' }, desc: '食堂、超市、交通等' },
 ];
 
 async function send(q) {

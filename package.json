@@ -29,6 +29,7 @@
     ]
   },
   "dependencies": {
+    "@devui-design/icons": "^1.4.0",
     "@matechat/core": "^1.14.0",
     "openai": "^6.45.0"
   }
