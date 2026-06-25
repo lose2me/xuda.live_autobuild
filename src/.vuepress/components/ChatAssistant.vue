@@ -93,7 +93,7 @@ async function send(q) {
 <style scoped>
 .chat-wrapper {
   margin: 0.5rem auto 0;
-  max-width: 880px;
+  max-width: var(--home-page-width);
   border: 1px solid var(--vp-c-border);
   border-radius: 12px;
   overflow: hidden;
