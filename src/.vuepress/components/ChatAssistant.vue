@@ -99,7 +99,7 @@ async function send(q) {
   background: var(--vp-c-bg);
   display: flex;
   flex-direction: column;
-  height: 420px;
+  height: 600px;
 }
 
 .msg-area {
