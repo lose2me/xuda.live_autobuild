@@ -1,13 +1,12 @@
 <template>
   <div class="chat-assistant">
-    <div class="chat-header" @click="toggle">
+    <div class="chat-header">
       <span class="chat-title">
         <span class="chat-icon">🤖</span> 徐工校园助手
       </span>
-      <span class="chat-toggle">{{ open ? '收起' : '展开' }}</span>
     </div>
 
-    <div v-if="open" class="chat-body">
+    <div class="chat-body">
       <div class="chat-messages" ref="msgList">
         <div v-if="messages.length === 0" class="chat-hint">
           问我任何关于徐工的问题：宿舍、食堂、军训、转专业……
@@ -44,25 +43,17 @@
 </template>
 
 <script setup>
-import { ref, nextTick, watch } from 'vue';
+import { ref, nextTick } from 'vue';
 
 const CHAT_URL = 'https://search.xuda.live/chats/xuda-assistant/chat/completions';
 const CHAT_KEY = 'e1c235a8f87cad6e9afbec885c0a3c1d356b268985261add1c16c6f171d86938';
 
-const open = ref(false);
 const input = ref('');
 const messages = ref([]);
 const streamText = ref('');
 const streaming = ref(false);
 const loading = ref(false);
 const msgList = ref(null);
-
-function toggle() {
-  open.value = !open.value;
-  if (open.value) {
-    nextTick(() => scrollBottom());
-  }
-}
 
 function scrollBottom() {
   nextTick(() => {
@@ -172,13 +163,7 @@ async function send() {
   justify-content: space-between;
   align-items: center;
   padding: 0.9rem 1.2rem;
-  cursor: pointer;
   background: var(--vp-c-bg-soft);
-  user-select: none;
-}
-
-.chat-header:hover {
-  background: var(--vp-c-bg-mute);
 }
 
 .chat-title {
@@ -189,11 +174,6 @@ async function send() {
 
 .chat-icon {
   margin-right: 0.3rem;
-}
-
-.chat-toggle {
-  font-size: 0.85rem;
-  color: var(--vp-c-accent);
 }
 
 .chat-body {

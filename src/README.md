@@ -16,6 +16,9 @@ actions:
     icon: streamline-flex-color:user-collaborate-group-flat
     link: /guide/contact.html
     type: default
+---
+
+<ChatAssistant />
 
 highlights:
   - features:
@@ -33,10 +36,5 @@ highlights:
         icon: mobile-screen-button
         details: 开源，高性能，高颜值的校园助手APP
         link: /xzitpocket/releases.html
----
-
-<ChatAssistant />
-
----
 
 <GitHubActivity repo="lose2me/xuda.live_autobuild" view="changelog" apiBase="/api/xuda" :limit="1" showUpdateTime />
