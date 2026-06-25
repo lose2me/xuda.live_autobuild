@@ -54,8 +54,10 @@ const description = [
 ];
 
 const prompts = [
-  { value: 'dorm', label: '住宿条件', desc: '宿舍配置、空调、卫浴等' },
-  { value: 'campus', label: '校园环境', desc: '食堂、超市、交通等' },
+  { label: '宿舍是几人间，有独立卫浴和空调吗？' },
+  { label: '学校里有什么好吃的？' },
+  { label: '有晚自习、校园跑吗？' },
+  { label: '寒暑假一般放多久？' },
 ];
 
 async function send(q) {
