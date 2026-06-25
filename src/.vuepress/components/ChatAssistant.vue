@@ -109,7 +109,7 @@ async function send(q) {
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 1.5rem;
 }
 
 .chat-header {
