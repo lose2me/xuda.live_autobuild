@@ -1,7 +1,7 @@
 <template>
   <div class="chat-wrapper">
     <div class="chat-header">徐工校园助手</div>
-    <McLayoutContent class="msg-area">
+    <McLayoutContent ref="msgAreaRef" class="msg-area">
       <div v-if="messages.length === 0" class="chat-empty">
         <div class="intro-center">
           <McIntroduction
@@ -18,6 +18,9 @@
         :variant="m.from === 'user' ? 'filled' : 'bordered'"
         :loading="m.loading"
       >
+        <template #loadingTpl>
+          <span>咪正在思考 ...</span>
+        </template>
         <McMarkdownCard v-if="m.from === 'model'" :content="m.content" :typing="true" />
         <span v-else>{{ m.content }}</span>
       </McBubble>
@@ -37,7 +40,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, nextTick, watch } from 'vue';
 import OpenAI from 'openai';
 import { McBubble, McLayoutContent, McPrompt, McMarkdownCard, McIntroduction } from '@matechat/core';
 
@@ -50,6 +53,16 @@ const client = new OpenAI({
 
 const input = ref('');
 const messages = ref([]);
+const msgAreaRef = ref(null);
+
+watch(() => messages.value.length, () => {
+  nextTick(() => {
+    if (msgAreaRef.value) {
+      const el = msgAreaRef.value.$el || msgAreaRef.value;
+      el.scrollTop = el.scrollHeight;
+    }
+  });
+});
 const description = [
   '基于徐工生活指南文档，为你解答宿舍、食堂、课程、军训等校园问题。',
   '答案由 AI 生成，仅供参考，具体以学校最新通知为准。',
@@ -85,6 +98,12 @@ async function send(q) {
           messages.value[msgIdx].loading = false;
         }
         messages.value[msgIdx].content += delta;
+        nextTick(() => {
+          if (msgAreaRef.value) {
+            const el = msgAreaRef.value.$el || msgAreaRef.value;
+            el.scrollTop = el.scrollHeight;
+          }
+        });
       }
     }
   } catch (e) {
@@ -143,6 +162,7 @@ async function send(q) {
 }
 
 .prompt-list {
+  max-width: 560px;
   width: 100%;
 }
 
