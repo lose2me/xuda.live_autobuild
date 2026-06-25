@@ -54,10 +54,10 @@ const description = [
 ];
 
 const prompts = [
-  { label: '宿舍是几人间，有独立卫浴和空调吗？' },
-  { label: '学校里有什么好吃的？' },
-  { label: '有晚自习、校园跑吗？' },
-  { label: '寒暑假一般放多久？' },
+  { label: '宿舍是几人间，有独立卫浴和空调吗？', desc: '了解宿舍配置' },
+  { label: '学校里有什么好吃的？', desc: '食堂、周边美食' },
+  { label: '有晚自习、校园跑吗？', desc: '日常作息安排' },
+  { label: '寒暑假一般放多久？', desc: '假期时长' },
 ];
 
 async function send(q) {
@@ -130,12 +130,11 @@ async function send(q) {
   padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 1.5rem;
 }
 
 .prompt-list {
-  max-width: 360px;
   width: 100%;
 }
 
