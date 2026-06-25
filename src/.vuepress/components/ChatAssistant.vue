@@ -21,21 +21,22 @@
       </McBubble>
     </McLayoutContent>
 
-    <McLayoutSender>
-      <McInput
-        :value="input"
-        :maxLength="2000"
-        @change="e => input = e"
-        @submit="send"
+    <div class="chat-sender">
+      <input
+        v-model="input"
+        class="chat-input"
+        placeholder="输入问题..."
+        @keydown.enter="send(input); input=''"
       />
-    </McLayoutSender>
+      <button class="chat-send" @click="send(input); input=''">发送</button>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import OpenAI from 'openai';
-import { McBubble, McInput, McLayoutContent, McLayoutSender, McPrompt, McMarkdownCard, McIntroduction } from '@matechat/core';
+import { McBubble, McLayoutContent, McPrompt, McMarkdownCard, McIntroduction } from '@matechat/core';
 
 
 const client = new OpenAI({
@@ -120,5 +121,43 @@ async function send(q) {
 .prompt-list {
   max-width: 360px;
   width: 100%;
+}
+
+.chat-sender {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  border-top: 1px solid var(--vp-c-border);
+  background: var(--vp-c-bg-soft);
+}
+
+.chat-input {
+  flex: 1;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text);
+  outline: none;
+}
+
+.chat-input:focus {
+  border-color: var(--vp-c-accent);
+}
+
+.chat-send {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--vp-c-accent);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chat-send:hover {
+  opacity: 0.85;
 }
 </style>
