@@ -1,20 +1,18 @@
 import { defineClientConfig } from "vuepress/client";
-import { defineAsyncComponent, h } from "vue";
+import { defineAsyncComponent } from "vue";
 import GitHubActivity from "./components/GitHubActivity.vue";
+import Home from "./layouts/Home.vue";
 import xzitpocketConfig from "../../xzitpocket.config.json";
 
-const ChatAssistant = () => {
-  if (__VUEPRESS_SSR__) return null;
-  return h(defineAsyncComponent(() => import("./components/ChatAssistant.vue")));
-};
-
 export default defineClientConfig({
+  layouts: {
+    Home,
+  },
   enhance({ app }) {
     app.component("GitHubActivity", GitHubActivity);
-    app.component("ChatAssistant", ChatAssistant);
+    if (!__VUEPRESS_SSR__) {
+      app.component("ChatAssistant", defineAsyncComponent(() => import("./components/ChatAssistant.vue")));
+    }
     app.provide("xzitpocketConfig", xzitpocketConfig);
-  },
-  layoutSlots: {
-    heroAfter: ChatAssistant,
   },
 });
