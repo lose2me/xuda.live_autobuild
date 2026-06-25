@@ -3,11 +3,13 @@
     <div class="chat-header">徐工校园助手</div>
     <McLayoutContent class="msg-area">
       <div v-if="messages.length === 0" class="chat-empty">
-        <McIntroduction
-          :title="'徐工校园助手'"
-          :subTitle="'Hi，有什么可以帮你的？'"
-          :description="description"
-        />
+        <div class="intro-center">
+          <McIntroduction
+            :title="'徐工校园助手'"
+            :subTitle="'Hi，有什么可以帮你的？'"
+            :description="description"
+          />
+        </div>
         <McPrompt :list="prompts" direction="vertical" class="prompt-list" @itemClick="send($event.label)" />
       </div>
       <div v-for="(m, i) in messages" :key="i" class="msg-row">
@@ -132,6 +134,12 @@ async function send(q) {
   flex-direction: column;
   align-items: flex-start;
   gap: 1.5rem;
+}
+
+.intro-center {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .prompt-list {
