@@ -112,7 +112,7 @@ async function send(q) {
 }
 
 .msg-row {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.6rem;
 }
 
 .chat-header {
