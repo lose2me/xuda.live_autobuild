@@ -1,5 +1,6 @@
 <template>
   <div class="chat-wrapper">
+    <div class="chat-header">徐工校园助手</div>
     <McLayoutContent class="msg-area">
       <div v-if="messages.length === 0" class="chat-empty">
         问我任何关于徐工的问题：宿舍、食堂、军训、转专业……
@@ -90,6 +91,15 @@ async function send(q) {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+}
+
+.chat-header {
+  padding: 0.9rem 1.2rem;
+  background: var(--vp-c-bg-soft);
+  border-bottom: 1px solid var(--vp-c-border);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--vp-c-text);
 }
 
 .chat-empty {
