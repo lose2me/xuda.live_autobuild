@@ -3,7 +3,8 @@
     <div class="chat-header">徐工校园助手</div>
     <McLayoutContent class="msg-area">
       <div v-if="messages.length === 0" class="chat-empty">
-        问我任何关于徐工的问题：宿舍、食堂、军训、转专业……
+        <div class="prompt-label">试试问：</div>
+        <McPrompt :list="prompts" direction="horizontal" class="prompt-list" @itemClick="send($event.label)" />
       </div>
       <McBubble
         v-for="(m, i) in messages"
@@ -29,7 +30,7 @@
 <script setup>
 import { ref } from 'vue';
 import OpenAI from 'openai';
-import { McBubble, McInput, McLayoutContent, McLayoutSender } from '@matechat/core';
+import { McBubble, McInput, McLayoutContent, McLayoutSender, McPrompt } from '@matechat/core';
 
 const client = new OpenAI({
   baseURL: 'https://search.xuda.live/chats/xuda-assistant',
@@ -39,6 +40,10 @@ const client = new OpenAI({
 
 const input = ref('');
 const messages = ref([]);
+const prompts = [
+  { value: 'dorm', label: '住宿条件' },
+  { value: 'campus', label: '校园环境' },
+];
 
 async function send(q) {
   if (!q?.trim()) return;
@@ -104,8 +109,16 @@ async function send(q) {
 
 .chat-empty {
   text-align: center;
-  color: var(--vp-c-text-subtle);
-  font-size: 0.9rem;
   padding: 2rem 0;
+}
+
+.prompt-label {
+  color: var(--vp-c-text-subtle);
+  font-size: 0.85rem;
+  margin-bottom: 0.8rem;
+}
+
+.prompt-list {
+  justify-content: center;
 }
 </style>
