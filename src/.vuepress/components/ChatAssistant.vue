@@ -10,9 +10,8 @@
         />
         <McPrompt :list="prompts" direction="vertical" class="prompt-list" @itemClick="send($event.label)" />
       </div>
+      <div v-for="(m, i) in messages" :key="i" class="msg-row">
       <McBubble
-        v-for="(m, i) in messages"
-        :key="i"
         :align="m.from === 'user' ? 'right' : 'left'"
         :variant="m.from === 'user' ? 'filled' : 'bordered'"
         :loading="m.loading"
@@ -20,6 +19,7 @@
         <McMarkdownCard v-if="m.from === 'model'" :content="m.content" />
         <span v-else>{{ m.content }}</span>
       </McBubble>
+      </div>
     </McLayoutContent>
 
     <div class="chat-sender">
@@ -111,7 +111,7 @@ async function send(q) {
   flex-direction: column;
 }
 
-.msg-area > * {
+.msg-row {
   margin-bottom: 1.5rem;
 }
 
