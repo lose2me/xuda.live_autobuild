@@ -162,8 +162,7 @@ async function send(q) {
 }
 
 .prompt-list {
-  max-width: 560px;
-  width: 100%;
+  width: 300px;
 }
 
 .chat-sender {
