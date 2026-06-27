@@ -2,13 +2,13 @@
   <div class="chat-wrapper">
     <div class="chat-header">
       <img class="header-avatar" src="/ai.webp" alt="" />
-      徐工校园助手
+      徐小咪助手
     </div>
     <McLayoutContent ref="msgAreaRef" class="msg-area">
       <div v-if="messages.length === 0" class="chat-empty">
         <div class="intro-center">
           <McIntroduction
-            :title="'徐工校园助手'"
+            :title="'徐小咪助手'"
             :subTitle="'Hi，有什么可以帮你的？'"
             :description="description"
           />
