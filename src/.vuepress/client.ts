@@ -9,6 +9,7 @@ export default defineClientConfig({
     if (!__VUEPRESS_SSR__) {
       app.component("ChatAssistant", defineAsyncComponent(() => import("./components/ChatAssistant.vue")));
       app.component("FeatureCards", defineAsyncComponent(() => import("./components/FeatureCards.vue")));
+      app.component("ScorePredictChart", defineAsyncComponent(() => import("./components/ScorePredictChart.vue")));
     }
     app.provide("xzitpocketConfig", xzitpocketConfig);
   },
