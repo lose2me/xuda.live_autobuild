@@ -119,14 +119,14 @@ async function send(q) {
 <style scoped>
 .chat-wrapper {
   margin: 0 auto;
-  max-width: 1080px;
+  max-width: 900px;
   border: 1px solid var(--vp-c-border);
   border-radius: 12px;
   overflow: hidden;
   background: var(--vp-c-bg);
   display: flex;
   flex-direction: column;
-  height: 600px;
+  height: 500px;
 }
 
 @media (max-width: 768px) {
