@@ -223,7 +223,7 @@ async function send(q) {
 }
 
 /* streaming spinner — injected inline at end of markdown text */
-.is-streaming .mc-markdown-render > :last-child::after {
+.is-streaming :deep(.mc-markdown-render > :last-child)::after {
   content: '';
   display: inline-block;
   width: 12px;
