@@ -177,7 +177,7 @@ async function send(q) {
 }
 
 .prompt-list {
-  width: 300px;
+  width: 240px;
 }
 
 .chat-sender {
