@@ -131,7 +131,7 @@ async function send(q) {
 
 @media (max-width: 768px) {
   .chat-wrapper {
-    margin: 0 0.5rem;
+    margin: 0 0.25rem;
     max-width: none;
     border-radius: 8px;
     height: auto;
