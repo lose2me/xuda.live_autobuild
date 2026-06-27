@@ -26,8 +26,10 @@
         <template #loadingTpl>
           <span>咪正在思考 ...</span>
         </template>
-        <McMarkdownCard v-if="m.from === 'model'" :content="m.content" :typing="true" />
-        <span v-else>{{ m.content }}</span>
+        <div :class="{ 'msg-content': true, 'is-streaming': m.streaming }">
+          <McMarkdownCard v-if="m.from === 'model'" :content="m.content" :typing="true" />
+          <span v-else>{{ m.content }}</span>
+        </div>
       </McBubble>
       </div>
     </McLayoutContent>
@@ -87,7 +89,7 @@ async function send(q) {
   messages.value.push({ from: 'user', content: q });
 
   const msgIdx = messages.value.length;
-  messages.value.push({ from: 'model', content: '', loading: true });
+  messages.value.push({ from: 'model', content: '', loading: true, streaming: true });
 
   try {
     const stream = await client.chat.completions.create({
@@ -111,8 +113,10 @@ async function send(q) {
         });
       }
     }
+    messages.value[msgIdx].streaming = false;
   } catch (e) {
     messages.value[msgIdx].loading = false;
+    messages.value[msgIdx].streaming = false;
     messages.value[msgIdx].content = '出错了：' + e.message;
   }
 }
@@ -177,7 +181,7 @@ async function send(q) {
 }
 
 .prompt-list {
-  width: 240px;
+  width: 260px;
 }
 
 .chat-sender {
@@ -216,5 +220,23 @@ async function send(q) {
 
 .chat-send:hover {
   opacity: 0.85;
+}
+
+/* streaming spinner — injected inline at end of markdown text */
+.is-streaming .mc-markdown-render > :last-child::after {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+  border: 2px solid var(--vp-c-border);
+  border-top-color: var(--vp-c-accent);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 </style>
