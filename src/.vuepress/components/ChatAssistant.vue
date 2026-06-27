@@ -1,7 +1,7 @@
 <template>
   <div class="chat-wrapper">
     <div class="chat-header">
-      <img class="header-avatar" src="/ai.webp" alt="" />
+      <img class="header-avatar" src="/cat.webp" alt="" />
       徐小咪助手
     </div>
     <McLayoutContent ref="msgAreaRef" class="msg-area">
@@ -21,7 +21,7 @@
         :variant="m.from === 'user' ? 'filled' : 'bordered'"
         :loading="m.loading"
         avatarPosition="side"
-        :avatarConfig="m.from === 'user' ? { imgSrc: '/me.webp' } : { imgSrc: '/ai.webp' }"
+        :avatarConfig="m.from === 'user' ? { imgSrc: '/dog.webp' } : { imgSrc: '/cat.webp' }"
       >
         <template #loadingTpl>
           <span>咪正在思考 ...</span>

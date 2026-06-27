@@ -2,7 +2,7 @@
 home: true
 icon: house
 title: 首页
-heroImage: logo.png
+heroImage: cat.webp
 heroText: 徐工生活指南
 tagline: 旨在为徐工在校学生提供必要的生活指南
 
