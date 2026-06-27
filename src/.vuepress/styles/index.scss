@@ -79,4 +79,18 @@ a.route-link.vp-feature-item.link:hover{
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   }
 
+@media (max-width: 719px) {
+  .vp-navbar {
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: none !important;
+
+  }
+
+  .vp-navbar .vp-action {
+    display: none !important;
+  }
+}
+
 
