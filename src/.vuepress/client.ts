@@ -8,6 +8,7 @@ export default defineClientConfig({
     app.component("GitHubActivity", GitHubActivity);
     if (!__VUEPRESS_SSR__) {
       app.component("ChatAssistant", defineAsyncComponent(() => import("./components/ChatAssistant.vue")));
+      app.component("FeatureCards", defineAsyncComponent(() => import("./components/FeatureCards.vue")));
     }
     app.provide("xzitpocketConfig", xzitpocketConfig);
   },

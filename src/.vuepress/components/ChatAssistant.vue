@@ -8,9 +8,7 @@
       <div v-if="messages.length === 0" class="chat-empty">
         <div class="intro-center">
           <McIntroduction
-            :title="'徐小咪助手'"
             :subTitle="'Hi，有什么可以帮你的？'"
-            :description="description"
           />
         </div>
         <McPrompt :list="prompts" direction="vertical" class="prompt-list" @itemClick="send($event.label)" />
@@ -70,10 +68,6 @@ watch(() => messages.value.length, () => {
     }
   });
 });
-const description = [
-  '基于徐工生活指南文档，为你解答宿舍、食堂、课程、军训等校园问题。',
-  '答案由 AI 生成，仅供参考，具体以学校最新通知为准。',
-];
 
 const prompts = [
   { label: '宿舍是几人间，有独立卫浴和空调吗？', desc: '了解宿舍配置' },
@@ -125,7 +119,7 @@ async function send(q) {
 <style scoped>
 .chat-wrapper {
   margin: 0 auto;
-  max-width: 1040px;
+  max-width: 1080px;
   border: 1px solid var(--vp-c-border);
   border-radius: 12px;
   overflow: hidden;
@@ -133,6 +127,16 @@ async function send(q) {
   display: flex;
   flex-direction: column;
   height: 600px;
+}
+
+@media (max-width: 768px) {
+  .chat-wrapper {
+    margin: 0 0.5rem;
+    max-width: none;
+    border-radius: 8px;
+    height: auto;
+    max-height: calc(100vh - 4rem);
+  }
 }
 
 .msg-area {
